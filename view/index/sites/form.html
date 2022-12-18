@@ -4,8 +4,8 @@
         <div class="col-sm-8">
             <div class="form-group">
                 <label class="control-label">文本站点</label>
-                <textarea id="sites_text" class="form-control" placeholder="Your message here..." rows="20" data-parsley-required="true" name="sites_text">a.test.com:80,b.test.com:8080;/www/wwwroot/a.test.com:/www/wwwroot/b.test.com</textarea>
-                <span class="help-block">例：（/多域名站点，:更改端口，;源目录:p）<br>1：最简单的一行一个域名来创建多个域名. <br>2：a.test.com:80,b.test.com:8080;/www/wwwroot/a.test.com:/www/wwwroot/source.com【意思就是说创建跟d.test.com一样的一个包含三个域名的8080端口可访问的站点】<br>3: :p添加则说明该站点的目录是d.test.com,如果出p之外或:p不添加则为复制源目录。</span>
+                <textarea id="sites_text" class="form-control" placeholder="Your message here..." rows="20" data-parsley-required="true" name="sites_text">a.test.com:80,b.test.com:8080;/www/wwwroot/source.com</textarea>
+                <span class="help-block">例：a.test.com,b.test.com:8080;/home/source_path:/www/wwwroot/target_path<br>1：最简单的一行一个域名来创建多个站点. <br>2：[;]分号切割域名与目录[,]逗号切割站点域名,[:（;前）]冒号切割域名与端口,[:(;后)]冒号切割指向目录和源码目录</span>
             </div>
         </div>
         <div class="col-sm-4">
@@ -16,7 +16,7 @@
                         <span id="site_num">0</span>
                     </div>
                 </div>
-                {ESA:SELECTPAGE name="config_id" url=":esaurl('index.configs/index')" value="$info.config_id|default='0'" multiple="true"}
+                {ESA:SELECTPAGE name="config_id" url=":esaurl('index.configs/index')" value="$info.config_id|default='0'" multiple="false"}
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -1,0 +1,192 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <form class="form-horizontal no-margin form" method="POST">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称</label>
+            <div class="col-sm-9">
+                <input class="form-control" name="name" type="text" placeholder="名称" data-parsley-required="true" value="{$info.name|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否添加SSL：</label>
+            <div class="col-sm-9">
+                <div class="input-group checkbox2input">
+                    <span class="input-group-addon">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" id="checkbox1" name="ssl_status" value="1" {if $info.ssl_status}checked{/if}>
+                            <label for="checkbox1"></label>
+                        </span>
+                    </span>
+                    <input class="form-control cb-control" type="input" name="ssl_email" value="{$info.ssl_email|default='test@qq.com'}" data-parsley-type="email" {if empty($info.ssl_status)}disabled{/if}>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否自动追加www：</label>
+            <div class="col-sm-9">
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio11" name="www_status" value="1" {if $info.www_status}checked{/if}>
+                        <label for="inlineRadio11"></label>
+                    </div>
+                    <div class="inline-block vertical-top">是</div>
+                </div>
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio12" name="www_status" value="0" {if empty($info.www_status)}checked{/if}>
+                        <label for="inlineRadio12"></label>
+                    </div>
+                    <div class="inline-block vertical-top">否</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否删除建站的默认数据：</label>
+            <div class="col-sm-9">
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio21" name="clear_status" value="1" {if $info.clear_status}checked{/if}>
+                        <label for="inlineRadio21"></label>
+                    </div>
+                    <div class="inline-block vertical-top">是</div>
+                </div>
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio22" name="clear_status" value="0" {if empty($info.clear_status)}checked{/if}>
+                        <label for="inlineRadio22"></label>
+                    </div>
+                    <div class="inline-block vertical-top">否</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否修改基础目录：</label>
+            <div class="col-sm-9">
+                <div class="input-group checkbox2input">
+                    <span class="input-group-addon">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" id="checkbox3" name="base_path_status" value="1" {if $info.base_path_status}checked{/if}>
+                            <label for="checkbox3"></label>
+                        </span>
+                    </span>
+                    <input class="form-control cb-control" type="input" name="base_path" value="{$info.base_path|default='/www/wwwroot/'}" {if empty($info.base_path_status)}disabled{/if}>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否指向目录：</label>
+            <div class="col-sm-9">
+                <div class="input-group checkbox2input">
+                    <span class="input-group-addon">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" id="checkbox4" name="path_status" value="1" {if $info.path_status}checked{/if}>
+                            <label for="checkbox4"></label>
+                        </span>
+                    </span>
+                    <input class="form-control cb-control" type="input" name="target_path" value="{$info.target_path|default=''}" {if empty($info.path_status)}disabled{/if}>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否生成数据库：</label>
+            <div class="col-sm-9">
+                <div class="input-group checkbox2input">
+                    <span class="input-group-addon">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" id="checkbox5" name="sql_status" value="1" {if $info.sql_status}checked{/if}>
+                            <label for="checkbox5"></label>
+                        </span>
+                    </span>
+                    <select class="form-control cb-control" name="sql_codeing" {if empty($info.sql_status)}disabled{/if}>
+                        <option value="utf8" {if $info.sql_codeing == "utf8"}selected{/if}>数据库数据集：utf8</option>
+                        <option value="utf8mb4" {if $info.sql_codeing == "utf8mb4"}selected{/if}>数据库数据集：utf8mb4</option>
+                        <option value="gbk" {if $info.sql_codeing == "gbk"}selected{/if}>数据库数据集：gbk</option>
+                        <option value="big5" {if $info.sql_codeing == "big5"}selected{/if}>数据库数据集：big5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">站点分类：</label>
+            <div class="col-sm-9">
+                <select class="form-control cb-control" name="web_type">
+                    {volist name="web_types" id="value"}
+                    <option value="{$value.id}" {if $info.web_type == $value.id}selected{/if}>{$value.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">PHP版本：</label>
+            <div class="col-sm-9">
+                <select class="form-control cb-control" name="php_version">
+                    {volist name="php_versions" id="value"}
+                    <option value="{$value.version}" {if $info.php_version == $value.version}selected{/if}>{$value.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">配置伪静态：</label>
+            <div class="col-sm-9">
+                <div class="input-group checkbox2input">
+                    <span class="input-group-addon">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" id="checkbox6" name="rewrite_status" value="1" {if $info.rewrite_status}checked{/if}>
+                            <label for="checkbox6"></label>
+                        </span>
+                    </span>
+                    <textarea class="form-control cb-control" rows="3" name="rewrite_config" {if empty($info.rewrite_status)}disabled{/if}>{$info.rewrite_config|default=''}</textarea>
+                </div>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--    <label class="col-sm-3 control-label">是否生成网站地图：</label>-->
+        <!--    <div class="col-sm-9">-->
+        <!--        <div class="radio inline-block">-->
+        <!--            <div class="custom-radio m-right-xs">-->
+        <!--                <input type="radio" id="inlineRadio31" name="sitemap_status" value="1" disabled>-->
+        <!--                <label for="inlineRadio31"></label>-->
+        <!--            </div>-->
+        <!--            <div class="inline-block vertical-top">是</div>-->
+        <!--        </div>-->
+        <!--        <div class="radio inline-block">-->
+        <!--            <div class="custom-radio m-right-xs">-->
+        <!--                <input type="radio" id="inlineRadio32" name="sitemap_status" value="0" checked disabled="">-->
+        <!--                <label for="inlineRadio32"></label>-->
+        <!--            </div>-->
+        <!--            <div class="inline-block vertical-top">否</div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {:token()}
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group layer-footer">
+            <label class="control-label col-xs-12 col-sm-2"></label>
+            <div class="col-xs-12 col-sm-10">
+                <button type="submit" class="btn btn-success btn-embossed">{if !empty($info.id)}保存{else}添加{/if}</button>
+                <button type="button" class="btn btn-default btn-embossed layer-close">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    require(['esa_form','template'],function(form,Template,esa){
+        function confirmCallback(){
+            ESA.clog("弹窗确认回调");
+        }
+        form.init($(".form"),confirmCallback())
+        $(".checkbox2input input[type='checkbox']").on("click",function(){
+            if($(this).is(":checked")){
+                $(this).parent().parent().parent().find(".cb-control").removeAttr("disabled");
+            }else{
+                $(this).parent().parent().parent().find(".cb-control").attr("disabled","true");
+            }
+        })
+    })
+</script>
+{include file="$esa_footer"}

@@ -21,8 +21,35 @@ CREATE TABLE `{$prefix}qubit_bt_manager_configs`  (
     `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
     `pfid` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '平台ID',
     `uid` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
+    `server_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '服务器ID',
     `name` varchar(256) NOT NULL DEFAULT '' COMMENT '配置自定义名称',
-    `config` text DEFAULT '' COMMENT '保存的配置信息',
+    
+    `ssl_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '开启ssl:0=否,1=是',
+    `ssl_email` varchar(100) NOT NULL DEFAULT '' COMMENT 'ssl配置邮箱',
+    `is_force_ssl` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否强制ssl:0=否,1=是',
+    
+    `base_path_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否修改基础目录:0=否,1=是',
+    `base_path` varchar(100) NOT NULL DEFAULT '' COMMENT '基础目录',
+    
+    `path_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否指向目录:0=否,1=是',
+    `target_path` varchar(100) NOT NULL DEFAULT '' COMMENT '指向目录',
+    
+    `source_copy` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '开启源目录复制:0=否,1=是',
+    `source_path` varchar(100) NOT NULL DEFAULT '' COMMENT '源目录',
+    
+    `www_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否自动追加www:0=否,1=是',
+    `clear_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否删除建站的默认数据:0=否,1=是',
+    `sitemap_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否生成网站地图:0=否,1=是',
+    
+    `sql_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否生成数据库:0=否,1=是',
+    `sql_codeing` varchar(10) NOT NULL DEFAULT 'utf8' COMMENT '数据库编码',
+    
+    `web_type` int(5) unsigned NOT NULL DEFAULT 0 COMMENT '站点分类',
+    `php_version` varchar(2) NOT NULL DEFAULT '00' COMMENT 'php版本',
+    
+    `rewrite_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否配置伪静态:0=否,1=是',
+    `rewrite_config` text DEFAULT '' COMMENT '伪静态',
+    
     `create_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '添加时间',
     `update_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
@@ -37,7 +64,7 @@ CREATE TABLE `{$prefix}qubit_bt_manager_sites`  (
     
     `domain` varchar(50) NOT NULL DEFAULT '' COMMENT '域名',
     `port` int(5) NOT NULL DEFAULT '80' COMMENT '端口',
-    `domain_list`  text DEFAULT '' COMMENT '域名列表',
+    `domain_list` text DEFAULT '' COMMENT '域名列表',
     `path` varchar(100) NOT NULL DEFAULT '' COMMENT '根目录',
     `source_path` varchar(100) NOT NULL DEFAULT '' COMMENT '源目录',
     

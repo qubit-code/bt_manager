@@ -73,6 +73,18 @@ class Main extends Addons
                 "icon"  => "fa fa-sitemap",
                 "level" => 1,
                 "href"  => esaurl('index.sites/index'),
+            ],
+            [
+                "id"    => 3,
+                "fid"   => 0,
+                "name"  => "configs",
+                "type"  => "system",
+                "title" => "站点配置管理",
+                "title_sm"  => "配置",
+                "en"    => "configs",
+                "icon"  => "fa fa-tags",
+                "level" => 1,
+                "href"  => esaurl('index.configs/index'),
             ]
         ];
     }

@@ -9,7 +9,7 @@ class Sites extends Base
     {
         if($this->request->isAjax()){
             $model = $this->model("sites");
-            return $model->where("uid",$this->auth->id)->order("id desc")->where("delete_time",0)->paginate($this->request->param("limit"));
+            return $model->where("server_id",$this->server_id)->where("uid",$this->auth->id)->order("id desc")->where("delete_time",0)->paginate($this->request->param("limit"));
         }
         return $this->fetch();
     }
@@ -17,8 +17,8 @@ class Sites extends Base
     public function get_count()
     {
         $model = $this->model("sites");
-        $total = $model->where("uid",$this->auth->id)->where("delete_time",0)->count();
-        $wait = $model->where("uid",$this->auth->id)->where("delete_time",0)->where("siteStatus",0)->count();
+        $total = $model->where("server_id",$this->server_id)->where("uid",$this->auth->id)->where("delete_time",0)->count();
+        $wait = $model->where("server_id",$this->server_id)->where("uid",$this->auth->id)->where("delete_time",0)->where("siteStatus",0)->count();
         return $this->success("获取成功","",[$total,$wait]);
     }
     
@@ -100,7 +100,7 @@ class Sites extends Base
     public function get_ids()
     {
         $model = $this->model("sites");
-        $ids = $model->where("uid",$this->auth->id)->where("delete_time",0)->where("siteStatus",0)->column("id");
+        $ids = $model->where("server_id",$this->server_id)->where("uid",$this->auth->id)->where("delete_time",0)->where("siteStatus",0)->column("id");
         if(count($ids) == 0){
             return $this->error("无待创建数据","",[]);
         }
