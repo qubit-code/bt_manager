@@ -1,0 +1,59 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <form class="form-horizontal no-margin form" method="POST">
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label class="control-label">文本站点</label>
+                <textarea id="sites_text" class="form-control" placeholder="Your message here..." rows="20" data-parsley-required="true" name="sites_text">a.test.com:80,b.test.com:8080;/www/wwwroot/a.test.com:/www/wwwroot/b.test.com</textarea>
+                <span class="help-block">例：（/多域名站点，:更改端口，;源目录:p）<br>1：最简单的一行一个域名来创建多个域名. <br>2：a.test.com:80,b.test.com:8080;/www/wwwroot/a.test.com:/www/wwwroot/source.com【意思就是说创建跟d.test.com一样的一个包含三个域名的8080端口可访问的站点】<br>3: :p添加则说明该站点的目录是d.test.com,如果出p之外或:p不添加则为复制源目录。</span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+                <label class="control-label"></label>
+                <div class="widget-stat clearfix">
+                    <div class="stat-info">
+                        <small class="text-muted text-upper">站点数量</small>
+                        <span id="site_num">0</span>
+                    </div>
+                </div>
+                {ESA:SELECTPAGE name="config_id" url=":esaurl('index.configs/index')" value="$info.config_id|default='0'" multiple="true"}
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {:token()}
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group layer-footer">
+            <label class="control-label col-xs-12 col-sm-2"></label>
+            <div class="col-xs-12 col-sm-10">
+                <button type="submit" class="btn btn-success btn-embossed">添加</button>
+                <button type="button" class="btn btn-default btn-embossed layer-close">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    require(['esa_form','template'],function(form,Template,esa){
+        function confirmCallback(){
+            ESA.clog("弹窗确认回调");
+        }
+        form.init($(".form"),confirmCallback())
+        
+        function calc_site(t){
+            let text = $('#sites_text').val().split("\n");
+            let num = 0;
+            $.each(text,function(index,value){
+                if(value != ""){
+                    num++;
+                }
+            })
+            $("#site_num").text(num);
+        }
+        
+        calc_site($('#sites_text').val());
+        $('#sites_text').bind('input propertychange', function(){
+            calc_site($(this).val());
+        });
+    })
+</script>
+{include file="$esa_footer"}

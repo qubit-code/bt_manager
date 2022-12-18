@@ -1,0 +1,72 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <ul class="breadcrumb">
+        <li>{$esa_addon.name}</li>	  
+        <li>服务器管理</li>
+        <div class="pull-right">
+            <span class="label label-danger">当前处理服务器：{$server_info.name|default='未选中服务器'}</span>
+        </div>
+    </ul>
+    
+    <div class="smart-widget">
+        <div id="table"></div>
+    </div>
+</div>
+<script id="headToolbar" type="text/html">
+    <div class="padding-sm">
+        <button class="btn btn-info btn-sm" esa-event="reload"><i class="fa fa-refresh"></i></button>
+        <button class="btn btn-success btn-sm" esa-event="form">添加</button>
+        
+    </div>
+</script>
+<script id="tool" type="text/html">
+<button class="btn btn-info btn-xs" esa-event="set">设置当前服务器</button>
+    <button class="btn btn-success btn-xs" esa-event="form">编辑</button>
+    <button class="btn btn-danger btn-xs" esa-event="delete">删除</button>
+</script>
+<script>
+require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
+    Table.init({
+        elem: "#table",
+        select: "checkbox",
+        page: true,
+        cols: [
+            {field:"id",width:"50px",title:"ID"},
+            {field:"name",width:"200px",title:"名称"},
+            {field:"bt_panel",width:"auto",title:"服务器地址"},
+            {field:"create_time",width:"150px",title:"创建时间"},
+            {field:"tool",width:"15%",title:"操作",toolbar:"#tool"}
+        ],
+        headToolbar:"#headToolbar",
+        limit: 10,
+    })
+    Table.on("#table",function(obj){
+        if(obj.event == "reload"){
+            Table.reload("#table");
+        }else if(obj.event == "form"){
+            ESA.fun.open("{:esaurl('index.servers/form')}","添加",{
+                data:{id:obj.data.id},
+                callback: function(res){
+                    Table.reload("#table");
+                }
+            });
+        }else if(obj.event == "delete"){
+            ESA.fun.ajax({
+                url: "{:esaurl('index.servers/delete')}",
+                data: {id: obj.data.id}
+            },function(){
+                Table.reload("#table");
+            })
+        }else if(obj.event == "set"){
+            ESA.fun.ajax({
+                url: "{:esaurl('index.servers/set')}",
+                data: {id: obj.data.id}
+            },function(){
+                $("#selected").text(obj.data.name)
+                Table.reload("#table");
+            })
+        }
+    })
+})
+</script>
+{include file="$esa_footer"}

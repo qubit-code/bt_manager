@@ -1,0 +1,89 @@
+{include file="common/header"}
+<div class="padding-md">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="page-title">
+                仪表盘
+            </div>
+            <div class="page-sub-header">
+                欢迎{$esa_user->nickname}进入
+            </div>
+        </div>
+    </div>
+    <div class="row m-top-md">
+        <div class="col-lg-3 col-sm-6">
+            <div class="statistic-box bg-danger m-bottom-md">
+                <div class="statistic-title">
+                    服务器总数量
+                </div>
+                <div class="statistic-value">
+                    <font id="servers_total">0</font>
+                </div>
+                <!--<div class="m-top-md">11% 比上周高</div>-->
+                <div class="statistic-icon-background">
+                    <i class="ion-eye"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="statistic-box bg-info m-bottom-md">
+                <div class="statistic-title">
+                    站点总数量
+                </div>
+                <div class="statistic-value">
+                    <font id="sites_total">0</font>
+                </div>
+                <!--<div class="m-top-md">8% 比上周高</div>-->
+                <div class="statistic-icon-background">
+                    <i class="ion-ios7-cart-outline"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="statistic-box bg-purple m-bottom-md">
+                <div class="statistic-title">
+                    待创建总数量
+                </div>
+                <div class="statistic-value">
+                    <font id="sites_not_create">0.00</font>
+                </div>
+                <!--<div class="m-top-md">3% 比上周高</div>-->
+                <div class="statistic-icon-background">
+                    <i class="ion-person-add"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="statistic-box bg-success m-bottom-md">
+                <div class="statistic-title">
+                    已创建总数量
+                </div>
+                <div class="statistic-value">
+                    <font id="site_created">0</font>
+                </div>
+                <!--<div class="m-top-md">7% 比上周高</div>-->
+                <div class="statistic-icon-background">
+                    <i class="ion-stats-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    require(["jquery","ESA"],function($,ESA){
+        $(function(){
+            // ESA.fun.ajax({
+            //     loading: false,
+            // },function(d){
+            //     console.log(d);
+            //     $("#servers_total").text(d.servers_total);
+            //     $("#sites_total").text(d.sites_total);
+            //     $("#sites_not_create").text(d.sites_not_create);
+            //     $("#site_created").text(d.site_created);
+            //     return false;
+            // })
+        })
+    })
+</script>
+
+{include file="common/footer"}

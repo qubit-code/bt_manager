@@ -1,0 +1,47 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <form class="form-horizontal no-margin form" method="POST">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="name" type="text" placeholder="名称" value="{$info.name|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">服务器地址</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="bt_panel" type="text" placeholder="" value="{$info.bt_panel|default=''}">
+                <span class="help-block text-danger">注：添加api的前提需要再服务器的宝塔中的【面板设置-》API接口】开启，并添加IP：【106.52.252.226】至其api白名单</span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">接口密钥</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="key" type="text" placeholder="" value="{$info.key|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {:token()}
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group layer-footer">
+            <label class="control-label col-xs-12 col-sm-2"></label>
+            <div class="col-xs-12 col-sm-10">
+                <button type="submit" class="btn btn-success btn-embossed">{if !empty($info.id)}保存{else}添加{/if}</button>
+                <button type="button" class="btn btn-default btn-embossed layer-close">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    require(['esa_form','template'],function(form,Template,esa){
+        function confirmCallback(){
+            ESA.clog("弹窗确认回调");
+        }
+        form.init($(".form"),confirmCallback())
+    })
+</script>
+{include file="$esa_footer"}

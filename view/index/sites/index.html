@@ -1,0 +1,127 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <ul class="breadcrumb">
+        <li>{$esa_addon.name}</li>	  
+        <li>站点管理</li>
+        <div class="pull-right">
+            <span class="label label-danger">当前处理服务器：{$server_info.name|default='未选中服务器'}</span>
+        </div>
+    </ul>
+    
+    <div class="smart-widget">
+        <div id="table"></div>
+    </div>
+</div>
+<script id="headToolbar" type="text/html">
+    <div class="padding-sm">
+        <button class="btn btn-info btn-sm" esa-event="reload"><i class="fa fa-refresh"></i></button>
+        <button class="btn btn-success btn-sm" esa-event="form">批量添加</button>
+        <button class="btn btn-success btn-sm" esa-event="create">提交所有批量创建</button>
+        <div class="pull-right">
+            已创建：<span class="badge badge-success" id="site_num_done">0</span>
+            待创建：<span class="badge badge-warning" id="site_num_wait">0</span>
+        </div>
+    </div>
+</script>
+<script id="tool" type="text/html">
+<%if (siteStatus==0){ %>
+    <button class="btn btn-danger btn-xs" esa-event="delete">删除</button>
+<% } %>
+</script>
+<script>
+require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Table,layer){
+    Table.init({
+        elem: "#table",
+        // select: "checkbox",
+        page: true,
+        cols: [
+            {field:"id",width:"50px",title:"ID"},
+            {field:"domain",width:"200px",title:"域名"},
+            {field:"port",width:"auto",title:"端口"},
+            {field:"siteStatus",width:"150px",title:"状态",tpl:function(d){return d.siteStatus == 0 ? "<span class='label label-warning'>待创建</span>" : "<span class='label label-success'>已创建</span>"}},
+            {field:"tool",width:"80px",title:"操作",toolbar:"#tool"}
+        ],
+        headToolbar:"#headToolbar",
+        limit: 10,
+        done: function(){
+            ESA.fun.ajax("{:esaurl('index.sites/get_count')}",function(d){
+                $("#site_num_done").text(d[0]);
+                $("#site_num_wait").text(d[1]);
+                return false;
+            })
+        }
+    })
+    
+    function create_site(ids,total,iteration=0){
+        if(total <= iteration){
+            Table.reload("#table");
+            return ;
+        }
+        ESA.fun.ajax({
+            url: "{:esaurl('index.sites/next')}",
+            data: {id: ids[iteration]}
+        },function(d){
+            ++iteration;
+            let k = parseInt(iteration*100/total);
+            $("#site_k").text(k + "%")
+            $('#site_k').attr('data-percent',k);
+            $('.chart-skill-red').data("easyPieChart").update(k);
+            $('.chart-skill-red').data('easyPieChart').disableAnimation();
+            $('.chart-skill-red').data('easyPieChart').enableAnimation();
+            create_site(ids, total, iteration);
+            return false;
+        })
+    }
+    
+    Table.on("#table",function(obj){
+        if(obj.event == "reload"){
+            Table.reload("#table");
+        }else if(obj.event == "form"){
+            ESA.fun.open("{:esaurl('index.sites/form')}","批量添加",{
+                area: ['80%','90%'],
+                data:{id:obj.data.id},
+                callback: function(res){
+                    Table.reload("#table");
+                }
+            });
+        }else if(obj.event == "delete"){
+            layer.confirm('删除此站点数据', {icon: 3, title:'确定删除此站点数据？'}, function(index){
+                ESA.fun.ajax({
+                    url: "{:esaurl('index.sites/delete')}",
+                    data: {id: obj.data.id}
+                },function(){
+                    Table.reload("#table");
+                })
+            });
+        }else if(obj.event == "create"){
+            let layIndex = layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'yourclass',
+                content: `
+                <div class="m-bottom-md">
+                    <div class="text-center">批量进度</div>
+                    <div class="chart profile-skill chart-skill-red center-block" data-percent="0">
+                        <span id="site_k">0%</span>
+                    </div>
+                </div>
+                `
+            });
+            $('.chart-skill-red').easyPieChart({
+                barColor: '#fc8675',
+                lineWidth: '5'
+            });
+            
+            ESA.fun.ajax("{:esaurl('index.sites/get_ids')}",function(d){
+                create_site(d,d.length);
+                return false;
+            },function(){
+                layer.close(layIndex);
+            })
+        }
+    })
+})
+</script>
+{include file="$esa_footer"}
