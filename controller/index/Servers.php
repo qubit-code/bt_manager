@@ -5,6 +5,7 @@ use addons\qubit_bt_manager\library\BTAPI;
 
 class Servers extends Base
 {
+    protected $UnCheck = ["*"];
     public function index()
     {
         if($this->request->isAjax()){
@@ -27,8 +28,13 @@ class Servers extends Base
             $param['pfid']  = PLATFORM_ID;
             $param['uid']   = $this->auth->id;
 
-            $BT = BTAPI::instance($param['bt_panel'],$param['key']);
+            $BT = new BTAPI($param['bt_panel'],$param['key']);
             $res = $BT->GetConfig();
+            
+            if($res == null){
+                return $this->error("服务器不存在，请核对信息后添加！");
+            }
+            
             if(!empty($res) && $res['status'] == false){
                 return $this->error($res['msg']);
             }
@@ -64,8 +70,15 @@ class Servers extends Base
     
     public function set(){
         $info = $this->model("servers",false)->where("id",$this->request->param("id"))->find();
-        if(empty($info)){
+        $BT = new BTAPI($info['bt_panel'],$info['key']);
+        $config = $BT->GetConfig();
+
+        if(empty($info) || $config == NULL){
             return $this->error("服务器不存在","");
+        }
+        
+        if($config['status'] == false){
+            return $this->error($config['msg']);
         }
         $pfid = PLATFORM_ID;
         session("server_id",$info['id']);

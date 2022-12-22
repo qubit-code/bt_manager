@@ -18,4 +18,12 @@ class Sites extends Model {
     protected $update     = [];
     
     protected $json=['domain_list'];
+    
+    public function Server(){
+        return $this->hasOne("addons\qubit_bt_manager\model\Servers","id","server_id");
+    }
+    
+    public function Config(){
+        return $this->hasOne("addons\qubit_bt_manager\model\Configs","id","config_id");
+    }
 }

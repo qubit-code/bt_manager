@@ -11,19 +11,6 @@ class BTAPI {
 		if($bt_panel) $this->BT_PANEL = $bt_panel;
 		if($bt_key) $this->BT_KEY = $bt_key;
 	}
-	
-	/**
-     *
-     * @param array $options 参数
-     * @return BTAPI
-     */
-    public static function instance($bt_panel = null,$bt_key = null)
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new static($bt_panel,$bt_key);
-        }
-        return self::$instance;
-    }
 
 	// public function apis($type){
 	// 	$list = [
@@ -261,6 +248,35 @@ class BTAPI {
 		curl_close($ch);
 // 		exit(var_dump($output));
         return json_decode($output,true);
+    }
+    
+    public function HttpPostCookie3($url,$timeout = 3)
+    {
+    	//定义cookie保存位置
+        $cookie_file=__DIR__.'/tmp/'.md5($this->BT_PANEL).'.cookie';
+        if(!file_exists($cookie_file)){
+            $fp = fopen($cookie_file,'w+');
+            fclose($fp);
+		}
+		$data = $this->GetKeyData();
+			
+		$ch = curl_init();
+		$url = $this->BT_PANEL.$url;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+// 		exit(var_dump($output));
+        return $code;
     }
 }
 

@@ -4,7 +4,7 @@
         <li>{$esa_addon.name}</li>	  
         <li>服务器管理</li>
         <div class="pull-right">
-            <span class="label label-danger">当前处理服务器：{$server_info.name|default='未选中服务器'}</span>
+            <span id="selected" class="label label-{if empty($server_id)}danger{else}success{/if}">{if !empty($server_id)}当前处理服务器：{/if}{$server_info.name|default='未选中服务器'}</span>
         </div>
     </ul>
     
@@ -62,7 +62,9 @@ require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
                 url: "{:esaurl('index.servers/set')}",
                 data: {id: obj.data.id}
             },function(){
-                $("#selected").text(obj.data.name)
+                $("#selected").removeClass("label-danger");
+                $("#selected").addClass("label-success");
+                $("#selected").text("当前处理服务器："+obj.data.name)
                 Table.reload("#table");
             })
         }
