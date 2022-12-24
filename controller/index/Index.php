@@ -17,7 +17,12 @@ class Index extends Base
     
     public function dashboard()
     {
-        exit(dump($this->BT->HttpPostCookie("system?action=GetConcifInfo")));
+        // exit(dump($this->BT->CopyFile($copy_file)));
         return $this->fetch();
+    }
+    
+    public function article()
+    {
+        return $this->model("articles")->paginate($this->request->param("limit"));
     }
 }

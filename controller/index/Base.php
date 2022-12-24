@@ -11,6 +11,7 @@ class Base extends Main
     protected $server_info = null;
     protected $server_id = 0;
     protected $UnCheck = [];
+    protected $user = null;
     
     public function __construct()
     {
@@ -29,6 +30,8 @@ class Base extends Main
         $this->assign("server_id", $this->server_id);
         $this->assign("server_info",$this->server_info);
         $this->checkauth();
+        $this->checkUser();
+        $this->assign("user",$this->user);
     }
     
     public function checkServer(){
@@ -49,5 +52,20 @@ class Base extends Main
         if($config['status'] == false){
             return $this->error($config['msg']." 请至【服务器管理】中重新处理服务器并设置服务器","","",0);
         }
+    }
+    
+    public function checkUser(){
+        $user = $this->model("users",false)->where("pfid",PLATFORM_ID)->where('uid',$this->auth->id)->find();
+        if(empty($user)){
+            $new_user = [
+                "pfid"  => PLATFORM_ID,
+                "uid"   => $this->auth->id,
+                "num"      => get_addon_config("basics.free_num"),
+                "create_time"   => time()
+            ];
+            $id = $this->model("users",false)->insertGetId($new_user);
+            $user = $this->model("users",false)->where("id",$id)->find();
+        }
+        $this->user = $user;
     }
 }

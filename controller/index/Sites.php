@@ -5,6 +5,7 @@ use addons\qubit_bt_manager\library\BTAPI;
 
 class Sites extends Base
 {
+    protected $UnCheck = ["next"];
     public function index()
     {
         if($this->request->isAjax()){
@@ -125,11 +126,12 @@ class Sites extends Base
             "domainlist"=> $model['domain_list'],
             "count"     => count($model['domain_list']),
         ];
+        $site_path = !empty($model['path']) ? $model['path'] : $this->server_info['sites_path']."/".$model['domain'];
         // 创建相关站点
         $site_info = [
             "webname"       => json_encode($webname),
             // 根目录
-            "path"          => !empty($model['path']) ? $model['path'] : $this->server_info['sites_path']."/".$model['domain'],
+            "path"          => $site_path,
             // 分类
             "type_id"       => empty($config['web_type']) ? 0 : $config['web_type'],
             // 项目类型
@@ -182,30 +184,107 @@ class Sites extends Base
         $model->databasePass = $site_info['datapassword'];
         
         // 清除默认文件
-        // 文件复制及修改
-        $copy_file = [
-            "sfile" => "",      // 源文件目录
-            "dfile" => "",      // 目标目录
-        ];
-        // ssl创建
-        $ssl_info = [
-            "siteName"  => "",
-            "email"     => "",
-            "updateOf"  => 1,
-            "domains"   => "",
-            "force"     => false,
-        ];
-        // 设置伪静态
-        $rewrite_info_linux = [
-            "path"  => "",
-            "data"  => "",
-            "encoding"   => "utf-8",
-        ];
+        if(!empty($config['clear_status'])){
+            $clear_info = [
+                "path"  => $site_path."/index.html",
+            ];
+            $clear_res_1 = $site->DeleteFile($clear_info);
+            
+            $clear_info = [
+                "path"  => $site_path."/404.html",
+            ];
+            $clear_res_2 = $site->DeleteFile($clear_info);
+            
+            if(empty($clear_res_1) || empty($clear_res_2) || (isset($clear_res_1['status']) && $clear_res_1['status'] == false) || (isset($clear_res_2['status']) && $clear_res_2['status'] == false)){
+                $model->clearStatus = 2;
+            }else{
+                $model->clearStatus = 1;
+            }
+            if(!empty($clear_res_1['msg'])){
+                $model->clearResult .= " index.html:".$clear_res_1['msg'];
+            }
+            if(!empty($clear_res_2['msg'])){
+                $model->clearResult .= " 404.html:".$clear_res_2['msg'];
+            }
+        }
         
-        $rewrite_info_win = [
-            "siteName"  => "",
-            "data"      => "",
-        ];
+        // 文件复制及修改
+        $copy_file = [];
+        if(!empty($model["source_path"])) {
+            $copy_file = [
+                "sfile" => $model['source_path'],      // 源文件目录
+                "dfile" => $model['path']."/".$model['domain']."/",      // 目标目录
+            ];
+        }
+        if(!empty($config['source_copy'])){
+            $copy_file = [
+                "sfile" => $config['source_path'],      // 源文件目录
+                "dfile" => $model['path']."/".$model['domain']."/",      // 目标目录
+            ];
+        }
+        if(!empty($copy_file)){
+// array(2) {
+//   ["status"] => bool(true)
+//   ["msg"] => string(19) "目录复制成功!"
+// }
+            $copy_res = $this->BT->CopyFile($copy_file);
+            if(empty($copy_res) || (isset($copy_res['status']) && $copy_res['status'] == false)){
+                $model->copyStatus = 2;
+            }else{
+                $model->copyStatus = 1;
+            }
+            if(!empty($copy_res['msg'])){
+                $model->copyResult = $copy_res['msg'];
+            }
+        }
+        // ssl创建
+        if(!empty($config['ssl_status'])){
+            $ssl_info = [
+                "siteName"  => $model['domain'],
+                "email"     => $config['ssl_email'],
+                "updateOf"  => 1,
+                "domains"   => json_encode(array_merge([$model['domain']],$model['domain_list'])),
+                "force"     => false,
+            ];
+            $ssl_res = $site->CreateLet($ssl_info);
+            if(empty($ssl_res) || (isset($ssl_res['status']) && $ssl_res['status'] == false)){
+                $model->sslStatus = 2;
+            }else{
+                $model->sslStatus = 1;
+            }
+            if(!empty($ssl_res['msg'])){
+                $model->sslResult = $ssl_res['msg'];
+            }
+        }
+        
+        
+        // 设置伪静态
+        if(!empty($config['rewrite_status'])){
+            if($this->server_info['backup_path'] == "win"){
+                $rewrite_info = [
+                    "siteName"  => $model['domain'],
+                    "data"      => $config['rewrite_config'],
+                ];
+                $rewrite_res = $site->HttpPostCookie("site?action=SetSiteRewrite",$rewrite_data);
+            }else{
+                $rewrite_info = [
+                    "path"  => "/www/server/panel/vhost/rewrite/".$web_info['web_site'].".conf",
+                    "data"  => $config['rewrite_config'],
+                    "encoding"   => "utf-8",
+                ];
+// {"status": true, "msg": "文件已保存!", "historys": ["1671861203", "1671861187"], "st_mtime": "1671861215"}
+                $rewrite_res = $site->SaveFileBody($rewrite_data);
+            }
+            if(empty($rewrite_res) || (isset($rewrite_res['status']) && $rewrite_res['status'] == false)){
+                $model->rewriteStatus = 2;
+            }else{
+                $model->rewriteStatus = 1;
+            }
+            if(!empty($rewrite_res['msg'])){
+                $model->rewriteResult = $rewrite_res['msg'];
+            }
+        }
+        
         
         $model->update_time = time();
         if($model->save()){

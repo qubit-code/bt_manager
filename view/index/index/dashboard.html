@@ -14,10 +14,10 @@
         <div class="col-lg-3 col-sm-6">
             <div class="statistic-box bg-danger m-bottom-md">
                 <div class="statistic-title">
-                    服务器总数量
+                    会员到期时间
                 </div>
                 <div class="statistic-value">
-                    <font id="servers_total">0</font>
+                    <font id="servers_total">{if $user.vip_end_time < time()}会员已过期{else}{$user_vip_end_time|date='Y-m-d H:i:s'}{/if}</font>
                 </div>
                 <!--<div class="m-top-md">11% 比上周高</div>-->
                 <div class="statistic-icon-background">
@@ -28,10 +28,10 @@
         <div class="col-lg-3 col-sm-6">
             <div class="statistic-box bg-info m-bottom-md">
                 <div class="statistic-title">
-                    站点总数量
+                    可用建站数量
                 </div>
                 <div class="statistic-value">
-                    <font id="sites_total">0</font>
+                    <font id="sites_total">{$user.num|default="0"}</font>
                 </div>
                 <!--<div class="m-top-md">8% 比上周高</div>-->
                 <div class="statistic-icon-background">
@@ -42,7 +42,7 @@
         <div class="col-lg-3 col-sm-6">
             <div class="statistic-box bg-purple m-bottom-md">
                 <div class="statistic-title">
-                    待创建总数量
+                    服务器总数量
                 </div>
                 <div class="statistic-value">
                     <font id="sites_not_create">0.00</font>
@@ -56,7 +56,7 @@
         <div class="col-lg-3 col-sm-6">
             <div class="statistic-box bg-success m-bottom-md">
                 <div class="statistic-title">
-                    已创建总数量
+                    站点总数量
                 </div>
                 <div class="statistic-value">
                     <font id="site_created">0</font>
@@ -68,9 +68,69 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="smart-widget widget-dark-blue">
+                <div class="smart-widget-header">
+                    公告列表
+                </div>
+                <div class="smart-widget-inner">
+                    <div class="smart-widget-body no-padding">
+                        <div id="table"></div>
+                    </div>
+                </div><!-- ./smart-widget-inner -->
+            </div><!-- ./smart-widget -->
+        </div><!-- ./col -->
+        <div class="col-lg-6">
+            <div class="smart-widget widget-dark-blue">
+                <div class="smart-widget-header">
+                    购买列表
+                </div>
+                <div class="smart-widget-inner">
+                    <div class="smart-widget-body no-padding">
+                        <div class="padding-md">
+                            <div class="row m-top-md">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="pricing-widget clean-pricing">
+                                        <div class="pricing-type bg-info text-center">Basic</div>
+                                        <div class="pricing-value bg-grey">
+                                        <span class="value">$39</span>/Month
+                                    </div>
+                                    
+                                    <ul class="pricing-service m-top-sm">
+                                        <li>Amount of space <span class="font-semi-bold">10 GB</span></li>
+                                        <li>Bandwidth per month  <span class="font-semi-bold">150 GB</span></li>
+                                        <li>5 Domains</li>
+                                        <li>10 Email Addresses</li>
+                                        <li>24/7 Unlimited Support</li>
+                                    </ul>
+                                    
+                                    <div class="m-top-md m-bottom-md text-center">
+                                        <a class="btn btn-info">Sign Up</a>
+                                    </div>
+                                    </div><!-- ./pricing-widget -->
+                                </div><!-- .col -->
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- ./smart-widget-inner -->
+            </div><!-- ./smart-widget -->
+        </div><!-- ./col -->
+    </div>
 </div>
 <script>
-    require(["jquery","ESA"],function($,ESA){
+    require(['ESA','esa_table',"jquery","ESA"],function(ESA,Table,$,ESA){
+        Table.init({
+            url: "{:esaurl('index.index/article')}",
+            elem: "#table",
+            page: true,
+            cols: [
+                {field:"id",width:"50px",title:"ID"},
+                {field:"name",width:"200px",title:"名称"},
+                // {field:"tool",width:"80px",title:"操作",toolbar:"#tool"}
+            ],
+            limit: 20,
+        })
         $(function(){
             // ESA.fun.ajax({
             //     loading: false,

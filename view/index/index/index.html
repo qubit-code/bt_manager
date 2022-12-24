@@ -77,24 +77,13 @@
                             <div class="panel-body paddingTB-sm">
                                 <ul>
                                     <li>
-                                        <a href="{:url('admin/profile')}" target="main-content">
+                                        <a href="{:url('index/user/profile')}" target="main-content">
                                             <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">个人中心</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{:url('admin/message')}" target="main-content">
-                                            <i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">消息</span>
-                                            <span class="badge badge-danger bounceIn animation-delay3">2</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{:url('system.setting/cache_alert')}" target="open" onclick="return false;" data-title="缓存处理" data-areaw="20%" data-areah="30%">
-                                            <i class="fa fa-microchip fa-lg"></i><span class="m-left-xs">缓存</span>
                                         </a>
                                     </li>
                                     <li class="divider"></li>
                                     <li>
-                                        <a href="{:url('admin/logout')}">
+                                        <a href="{:url('index/user/logout')}">
                                             <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
                                         </a>
                                     </li>
@@ -102,46 +91,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 消息栏 -->
-                    <ul class="nav-notification">
-                        <li>
-                            <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
-                            <span class="badge badge-purple bounceIn animation-delay5 active">1</span>
-                            <ul class="dropdown-menu message pull-right">
-                                <li><a>You have 4 new unread messages</a></li>
-                                <li>
-                                    <a class="clearfix" href="#">
-                                        <img src="__STATIC__images/profile/profile1.jpg" alt="User Avatar">
-                                        <div class="detail">
-                                            <strong>John Doe</strong>
-                                            <p class="no-margin">
-                                                Lorem ipsum dolor sit amet...
-                                            </p>
-                                            <small class="text-muted"><i class="fa fa-check text-success"></i> 27m ago</small>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li><a href="#">View all messages</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
-                            <span class="badge badge-info bounceIn animation-delay6 active">1</span>
-                            <ul class="dropdown-menu notification dropdown-3 pull-right">
-                                <li><a href="#">You have 5 new notifications</a></li>
-                                <li>
-                                    <a href="#">
-                                        <span class="notification-icon bg-warning">
-                                            <i class="fa fa-warning"></i>
-                                        </span>
-                                        <span class="m-left-xs">Server #2 not responding.</span>
-                                        <span class="time text-muted">Just now</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">View all notifications</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
