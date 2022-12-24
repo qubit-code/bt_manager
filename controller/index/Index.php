@@ -18,6 +18,8 @@ class Index extends Base
     public function dashboard()
     {
         // exit(dump($this->BT->CopyFile($copy_file)));
+        $pays = $this->model("pay")->select();
+        $this->assign("pays", $pays);
         return $this->fetch();
     }
     

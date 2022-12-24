@@ -1,0 +1,81 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <form class="form-horizontal no-margin form" method="POST">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="name" type="text" placeholder="名称" value="{$info.name|default=''}">
+                <span class="help-block">名称.</span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">缩略图</label>
+            <div class="col-sm-10">
+                {ESA:FILE name="image" type="esa_upload,chose_file" mimetype="image/*" multiple="false" maxsize="5MB" value="$info.image|default=''"}
+                <span class="help-block">缩略图。</span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">价格</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="fee" type="number" value="{$info.fee|default='0'}" step="0.01">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">天数</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="day" type="number" value="{$info.day|default='0'}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">次数</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="num" type="number" value="{$info.num|default='0'}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">是否启用</label>
+            <div class="col-sm-10">
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio1" name="status" value="1" {if !empty($info.status)}checked{/if}>
+                        <label for="inlineRadio1"></label>
+                    </div>
+                    <div class="inline-block vertical-top">启用</div>
+                </div>
+                <div class="radio inline-block">
+                    <div class="custom-radio m-right-xs">
+                        <input type="radio" id="inlineRadio2" name="status" value="0" {if empty($info.status)}checked{/if}>
+                        <label for="inlineRadio2"></label>
+                    </div>
+                    <div class="inline-block vertical-top">不启用</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="id" value="{$info.id|default=''}">
+                {:token()}
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group layer-footer">
+            <label class="control-label col-xs-12 col-sm-2"></label>
+            <div class="col-xs-12 col-sm-10">
+                <button type="submit" class="btn btn-success btn-embossed">{if !empty($info.id)}保存{else}添加{/if}</button>
+                <button type="button" class="btn btn-default btn-embossed layer-close">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    require(['esa_form','template'],function(form,Template,esa){
+        function confirmCallback(){
+            ESA.clog("弹窗确认回调");
+        }
+        form.init($(".form"),confirmCallback())
+    })
+</script>
+{include file="$esa_footer"}

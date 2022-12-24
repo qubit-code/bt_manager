@@ -49,11 +49,14 @@ require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
                 }
             });
         }else if(obj.event == "delete"){
-            ESA.fun.ajax({
-                url: "{:esaurl('index.configs/delete')}",
-                data: {id: obj.data.id}
-            },function(){
-                Table.reload("#table");
+            layer.confirm('删除此数据', {icon: 3, title:'确定删除此数据？'}, function(index){
+                ESA.fun.ajax({
+                    url: "{:esaurl('index.configs/delete')}",
+                    data: {id: obj.data.id}
+                },function(){
+                    layer.close(index);
+                    Table.reload("#table");
+                })
             })
         }else if(obj.event == "set"){
             ESA.fun.ajax({

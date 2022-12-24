@@ -104,16 +104,18 @@ CREATE TABLE `{$prefix}qubit_bt_manager_users`  (
     INDEX `pfid` (`pfid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表';
 
-CREATE TABLE `{$prefix}qubit_bt_manager_price`  (
+CREATE TABLE `{$prefix}qubit_bt_manager_pay`  (
     `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
     `pfid` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '平台ID',
     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '名称',
     `image` varchar(100) NOT NULL DEFAULT '' COMMENT '图片',
     `day` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '会员时间(天)',
     `num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用数量',
+    `fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+    `status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否可用:0=不可用,1=可用',
     `create_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '添加时间',
     `update_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-    PRIMARY KEY (`id`) USING BTREE,
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '价格表';
 
 CREATE TABLE `{$prefix}qubit_bt_manager_orders`  (

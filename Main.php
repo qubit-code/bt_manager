@@ -43,6 +43,7 @@ class Main extends Addons
             "users" => "\addons\qubit_bt_manager\model\Users",
             "orders" => "\addons\qubit_bt_manager\model\Orders",
             "articles" => "\addons\qubit_bt_manager\model\Articles",
+            "pay"   => "\addons\qubit_bt_manager\model\Pay",
         ];
         $model = model($models[$name]);
         if ($status) {

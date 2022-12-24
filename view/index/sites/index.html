@@ -92,6 +92,7 @@ require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Tab
                     url: "{:esaurl('index.sites/delete')}",
                     data: {id: obj.data.id}
                 },function(){
+                    layer.close(index);
                     Table.reload("#table");
                 })
             });

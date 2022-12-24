@@ -90,26 +90,25 @@
                     <div class="smart-widget-body no-padding">
                         <div class="padding-md">
                             <div class="row m-top-md">
+                                {volist name="pays" id="item"}
                                 <div class="col-md-3 col-sm-6">
                                     <div class="pricing-widget clean-pricing">
-                                        <div class="pricing-type bg-info text-center">Basic</div>
+                                        <div class="pricing-type bg-info text-center">{$item.name}</div>
                                         <div class="pricing-value bg-grey">
-                                        <span class="value">$39</span>/Month
+                                        <span class="value">{$item.fee}</span>
                                     </div>
                                     
                                     <ul class="pricing-service m-top-sm">
-                                        <li>Amount of space <span class="font-semi-bold">10 GB</span></li>
-                                        <li>Bandwidth per month  <span class="font-semi-bold">150 GB</span></li>
-                                        <li>5 Domains</li>
-                                        <li>10 Email Addresses</li>
-                                        <li>24/7 Unlimited Support</li>
+                                        <li>时间 <span class="font-semi-bold">{$item.day}天</span></li>
+                                        <li>站数  <span class="font-semi-bold">{$item.num}个</span></li>
                                     </ul>
                                     
                                     <div class="m-top-md m-bottom-md text-center">
-                                        <a class="btn btn-info">Sign Up</a>
+                                        <a class="btn btn-info">购买</a>
                                     </div>
                                     </div><!-- ./pricing-widget -->
                                 </div><!-- .col -->
+                                {/volist}
                             </div>
                         </div>
                     </div>
