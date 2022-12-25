@@ -17,7 +17,7 @@
                     会员到期时间
                 </div>
                 <div class="statistic-value">
-                    <font id="servers_total">{if $user.vip_end_time < time()}会员已过期{else}{$user_vip_end_time|date='Y-m-d H:i:s'}{/if}</font>
+                    <font id="servers_total" size="4">{if $user.vip_end_time < time()}会员已过期{else}{$user.vip_end_time|date='Y-m-d H:i:s'}{/if}</font>
                 </div>
                 <!--<div class="m-top-md">11% 比上周高</div>-->
                 <div class="statistic-icon-background">
@@ -104,7 +104,7 @@
                                     </ul>
                                     
                                     <div class="m-top-md m-bottom-md text-center">
-                                        <a class="btn btn-info">购买</a>
+                                        <a class="btn btn-info pay" data-id="{$item.id}">购买</a>
                                     </div>
                                     </div><!-- ./pricing-widget -->
                                 </div><!-- .col -->
@@ -130,17 +130,39 @@
             ],
             limit: 20,
         })
-        $(function(){
-            // ESA.fun.ajax({
-            //     loading: false,
-            // },function(d){
-            //     console.log(d);
-            //     $("#servers_total").text(d.servers_total);
-            //     $("#sites_total").text(d.sites_total);
-            //     $("#sites_not_create").text(d.sites_not_create);
-            //     $("#site_created").text(d.site_created);
-            //     return false;
-            // })
+        $(".pay").on("click",function(){
+            pay_id = $(this).data("id");
+            if(pay_id == "" || pay_id == null){
+                layer.msg("请选择一个商品下单！");
+                return ;
+            }
+            
+            ESA.fun.ajax({
+                url     :"{:esaurl('index.index/pay')}",
+                data    :{id:pay_id},
+                dataType:"html",
+            },function(d){
+                layer.open({
+                    type: 1,
+                    title: false, //不显示标题栏
+                    area: '300px;',
+                    id: 'payment', //设定一个id，防止重复弹出
+                    resize: false,
+                    btnAlign: 'c',
+                    moveType: 1,
+                    content: d,
+                    // cancel: function(index, layero){
+                    //     layer.confirm('订单已生成但未支付，是否进入订单页继续支付？', {icon: 3, title:'温馨提示'}, function(index){
+                    //         layer.msg("跳转至订单页");
+                    //         layer.close(index);
+                    //         window.location.href = "{:url('index/order/index')}";
+                    //     },function(){
+                    //         Table.reload("#order_table");
+                    //     });
+                    // }
+                });
+                return false;
+            })
         })
     })
 </script>

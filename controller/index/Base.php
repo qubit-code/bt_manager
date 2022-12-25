@@ -55,6 +55,9 @@ class Base extends Main
     }
     
     public function checkUser(){
+        if ($this->EXPOSURE == "*" || $this->EXPOSURE == ["*"] || in_array($this->action,$this->EXPOSURE)) {
+            return true;
+        }
         $user = $this->model("users",false)->where("pfid",PLATFORM_ID)->where('uid',$this->auth->id)->find();
         if(empty($user)){
             $new_user = [
