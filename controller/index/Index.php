@@ -64,7 +64,7 @@ class Index extends Base
             "create_time"   => time(),
         ];
         if($this->model("orders",false)->insert($order)){
-            return $this->payment(["title"=>$name,"fee"=>$money,"order_sn"=>$order_sn,"callback"=>esaurl('index.index/index',null,"",true)],'');
+            return $this->payment(["title"=>$name,"fee"=>$money,"order_sn"=>$order_sn,"callback"=>esaurl('index.index/index',null,"",true)]);
         }else{
             return $this->error("下单失败");
         }
