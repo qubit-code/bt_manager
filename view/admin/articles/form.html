@@ -1,0 +1,76 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <form class="form-horizontal no-margin form" method="POST">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="name" type="text" value="{$info.name|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="desc" type="text" value="{$info.desc|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">作者</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="author" type="text" value="{$info.author|default=''}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">缩略图</label>
+            <div class="col-sm-10">
+                {ESA:FILE name="image" type="esa_upload,chose_file" mimetype="image/*" multiple="false" maxsize="5MB" value="$info.image|default=''"}
+                <span class="help-block">缩略图。</span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">浏览次数</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="view_num" type="number" value="{$info.view_num|default='0'}">
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">内容</label>
+            <div class="col-sm-10">
+                {ESA:EDITOR name="content" value="$info.content|default=''"}
+                <span class="help-block"></span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">权重</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="sort" type="number" value="{$info.sort|default='0'}">
+                <span class="help-block">数字越大越靠前</span>
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="id" value="{$info.id|default=''}">
+                {:token()}
+            </div><!-- /.col -->
+        </div>
+        <div class="form-group layer-footer">
+            <label class="control-label col-xs-12 col-sm-2"></label>
+            <div class="col-xs-12 col-sm-10">
+                <button type="submit" class="btn btn-success btn-embossed">{if !empty($info.id)}保存{else}添加{/if}</button>
+                <button type="button" class="btn btn-default btn-embossed layer-close">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    require(['esa_form','template'],function(form,Template,esa){
+        function confirmCallback(){
+            ESA.clog("弹窗确认回调");
+        }
+        form.init($(".form"),confirmCallback())
+    })
+</script>
+{include file="$esa_footer"}

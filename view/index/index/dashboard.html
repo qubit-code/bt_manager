@@ -45,7 +45,7 @@
                     服务器总数量
                 </div>
                 <div class="statistic-value">
-                    <font id="sites_not_create">0.00</font>
+                    <font id="server_num">0.00</font>
                 </div>
                 <!--<div class="m-top-md">3% 比上周高</div>-->
                 <div class="statistic-icon-background">
@@ -59,7 +59,7 @@
                     站点总数量
                 </div>
                 <div class="statistic-value">
-                    <font id="site_created">0</font>
+                    <font id="site_num">0</font>
                 </div>
                 <!--<div class="m-top-md">7% 比上周高</div>-->
                 <div class="statistic-icon-background">
@@ -124,9 +124,9 @@
             elem: "#table",
             page: true,
             cols: [
-                {field:"id",width:"50px",title:"ID"},
-                {field:"name",width:"200px",title:"名称"},
-                // {field:"tool",width:"80px",title:"操作",toolbar:"#tool"}
+                {field:"name",width:"200px",title:"标题",tpl:function(d){return "<a class='show_article' data-id='"+d.id+"'>"+d.name+"</a>";}},
+                {field:"desc",width:"auto",title:"描述"},
+                {field:"create_time",width:"200px",title:"创建时间"}
             ],
             limit: 20,
         })
@@ -142,7 +142,7 @@
                 data    :{id:pay_id},
                 dataType:"html",
             },function(d){
-                layer.open({
+                window.parent.layer.open({
                     type: 1,
                     title: false, //不显示标题栏
                     area: '300px;',
@@ -150,19 +150,23 @@
                     resize: false,
                     btnAlign: 'c',
                     moveType: 1,
-                    content: d,
-                    // cancel: function(index, layero){
-                    //     layer.confirm('订单已生成但未支付，是否进入订单页继续支付？', {icon: 3, title:'温馨提示'}, function(index){
-                    //         layer.msg("跳转至订单页");
-                    //         layer.close(index);
-                    //         window.location.href = "{:url('index/order/index')}";
-                    //     },function(){
-                    //         Table.reload("#order_table");
-                    //     });
-                    // }
+                    content: d
                 });
                 return false;
             })
+        })
+        $("#table").on("click",".show_article",function(){
+            let id = $(this).data("id");
+            window.parent.ESA.fun.open("{:esaurl('index.index/article_detail')}","",{
+                area: ['80%','90%'],
+                data:{id:id},
+            });
+        })
+        ESA.fun.ajax("{:esaurl('index.index/statistics')}",function(d){
+            console.log(d);
+            $("#server_num").text(d.server_num);
+            $("#site_num").text(d.site_num);
+            return false;
         })
     })
 </script>

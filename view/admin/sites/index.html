@@ -1,0 +1,44 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <ul class="breadcrumb">
+        <li>{$esa_addon.name}</li>	  
+        <li>建站日志</li>
+    </ul>
+    
+    <div class="smart-widget">
+        <div id="table"></div>
+    </div>
+</div>
+<script id="headToolbar" type="text/html">
+    <div class="padding-sm">
+        <button class="btn btn-info btn-sm" esa-event="reload"><i class="fa fa-refresh"></i></button>
+    </div>
+</script>
+<script id="tool" type="text/html">
+</script>
+<script>
+require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Table,layer){
+    Table.init({
+        elem: "#table",
+        // select: "checkbox",
+        page: true,
+        cols: [
+            {field:"id",width:"50px",title:"ID"},
+            {field:"domain",width:"200px",title:"域名"},
+            {field:"server.name",width:"200px",title:"所属服务器"},
+            {field:"sys_user.nickname",width:"200px",title:"所属用户"},
+            {field:"siteStatus",width:"150px",title:"状态",tpl:function(d){return d.siteStatus == 0 ? "<span class='label label-warning'>待启用</span>" : (d.siteStatus == 1 ?"<span class='label label-success'>已创建</span>":"<span class='label label-danger'>创建失败</span>")}},
+        ],
+        headToolbar:"#headToolbar",
+        limit: 10,
+    })
+    
+    
+    Table.on("#table",function(obj){
+        if(obj.event == "reload"){
+            Table.reload("#table");
+        }
+    })
+})
+</script>
+{include file="$esa_footer"}

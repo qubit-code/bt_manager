@@ -7,7 +7,17 @@ return [
         "list"  => [
             [
                 "type"      => "input",
-                "title"     => "免费数量",
+                "title"     => "站点名称",
+                "param"     => [
+                    "name"      => "site_name",
+                    "value"     => "宝塔管理器",
+                ],
+                "explain"   => "",
+                "require"   => "",
+            ],
+            [
+                "type"      => "input",
+                "title"     => "用户初始免费数量",
                 "param"     => [
                     "name"      => "free_num",
                     "value"     => "10",

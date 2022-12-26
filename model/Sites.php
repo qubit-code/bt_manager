@@ -26,4 +26,8 @@ class Sites extends Model {
     public function Config(){
         return $this->hasOne("addons\qubit_bt_manager\model\Configs","id","config_id");
     }
+    
+    public function sysUser(){
+        return $this->hasOne("app\common\model\User","id","uid");
+    }
 }

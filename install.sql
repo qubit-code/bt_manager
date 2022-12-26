@@ -142,6 +142,7 @@ CREATE TABLE `{$prefix}qubit_bt_manager_articles`  (
     `image` varchar(100) NOT NULL DEFAULT '' COMMENT '图片',
     `content` text DEFAULT '' COMMENT '内容',
     `view_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览数量',
+    `sort` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '排序',
     `create_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '添加时间',
     `update_time` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE

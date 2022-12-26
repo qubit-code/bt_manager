@@ -1,14 +1,15 @@
 <?php
 namespace addons\qubit_bt_manager\controller\admin;
 
-class Pay extends Base
+class Users extends Base
 {
     public function index()
     {
         if($this->request->isAjax()){
-            $model = $this->model("pay");
+            $model = $this->model("users")->with("sys_user");
             return $model->order("id desc")->paginate($this->request->param("limit"))->each(function($d){
-                $d['image'] = attach2url($d['image']);
+                $d['sys_user']['avatar'] = attach2url($d['sys_user']['avatar']);
+                $d['vip_end_time'] = date("Y-m-d H:i:s",$d['vip_end_time']);
                 return $d;
             });
         }
@@ -16,7 +17,7 @@ class Pay extends Base
     }
     
     public function form(){
-        $model = $this->model("pay", false);
+        $model = $this->model("users", false);
         if ($this->request->isAjax()) {
             $param = $this->request->param();
             $status = "添加";
@@ -24,6 +25,7 @@ class Pay extends Base
                 $model = $model->isUpdate(true);
                 $status = "编辑";
             }
+            $param['vip_end_time'] = strtotime($param['vip_end_time']);
             if($model->save($param)){
                 return $this->success($status."成功","");
             }else{
@@ -36,7 +38,7 @@ class Pay extends Base
     }
     
     public function delete(){
-        if($this->model("pay")->where("id",$this->request->param("id"))->delete()){
+        if($this->model("users")->where("id",$this->request->param("id"))->delete()){
             return $this->success("删除成功","");
         }else{
             return $this->error("删除失败","");

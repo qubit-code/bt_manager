@@ -3,7 +3,7 @@ namespace addons\qubit_bt_manager\model;
 
 use think\Model;
 
-class Pay extends Model {
+class Pays extends Model {
     // 设置数据表（不含前缀）
     protected $name = 'qubit_bt_manager_pay';
 

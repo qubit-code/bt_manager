@@ -16,4 +16,12 @@ class Servers extends Model {
     protected $auto       = [];
     protected $insert     = [];
     protected $update     = [];
+    
+    public function user(){
+        return $this->hasOne("addons\qubit_bt_manager\model\Users","uid","uid");
+    }
+    
+    public function sysUser(){
+        return $this->hasOne("app\common\model\User","id","uid");
+    }
 }

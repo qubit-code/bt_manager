@@ -14,8 +14,16 @@ class Hook extends AddonsHook
             $order = model("\addons\qubit_bt_manager\model\Orders")->where("order_sn",$data['order']['order_sn'])->find();
             model("\addons\qubit_bt_manager\model\Orders")->where("order_sn",$data['order']['order_sn'])->update(["pay_time"=>time()]);
 
-            model("\addons\qubit_bt_manager\model\Users")->where("pfid",$data['order']['pfid'])->where("uid",$data['order']['uid'])->update(['vip_end_time' => time() + $order['day'] * 24 * 60 * 60]);
-            model("\addons\qubit_bt_manager\model\Users")->where("pfid",$data['order']['pfid'])->where("uid",$data['order']['uid'])->setInc("num",$order['num']);
+            
+            $userInfo = model("\addons\qubit_bt_manager\model\Users")->where("pfid",$data['order']['pfid'])->where("uid",$data['order']['uid'])->find();
+            $update = [
+                'vip_end_time' => time() + $order['day'] * 24 * 60 * 60,
+                'num'   => $userInfo['num'] + $order['num'],
+            ];
+            if($userInfo['vip_end_time'] > time()){
+                $update['vip_end_time'] = $userInfo['vip_end_time'] + $order['day'] * 24 * 60 * 60;
+            }
+            model("\addons\qubit_bt_manager\model\Users")->where("pfid",$data['order']['pfid'])->where("uid",$data['order']['uid'])->update($update);
         }
     }
 }

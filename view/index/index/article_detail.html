@@ -1,0 +1,23 @@
+{include file="common/header"}
+<div class="padding-md">
+    <div class="blog-wrapper">
+        <div class="blog-list">
+            <div class="blog-header clearfix m-bottom-md">
+                <div class="blog-date">
+                    <img src="{$info.image|attach2url}" alt="">
+                </div>
+            
+            <div class="blog-title">
+                <div class="text-upper">{$info.name|default=""}</div>
+                <div class="text-muted font-12">
+                    作者： <a href="#">{$info.author}</a>
+                    <span class="m-left-xs m-right-xs">|</span>
+                    <span><i class="fa fa-comments"></i> {$info.view_num} 次浏览</span>
+                </div>
+            </div>
+        </div><!-- ./blog-header -->
+        {$info.content|raw}
+        </div><!-- ./blog-list -->
+    </div>
+</div>
+{include file="common/footer"}

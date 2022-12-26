@@ -16,4 +16,8 @@ class Users extends Model {
     protected $auto       = [];
     protected $insert     = [];
     protected $update     = [];
+    
+    public function sysUser(){
+        return $this->hasOne("app\common\model\User","id","uid");
+    }
 }

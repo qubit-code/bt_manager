@@ -1,0 +1,67 @@
+{include file="$esa_header"}
+<div class="padding-md">
+    <ul class="breadcrumb">
+        <li>{$esa_addon.name}</li>	  
+        <li>支付选项</li>
+    </ul>
+    
+    <div class="smart-widget">
+        <div id="table"></div>
+    </div>
+</div>
+<script id="headToolbar" type="text/html">
+    <div class="padding-sm">
+        <button class="btn btn-info btn-sm" esa-event="reload"><i class="fa fa-refresh"></i></button>
+        <button class="btn btn-success btn-sm" esa-event="form">添加</button>
+    </div>
+</script>
+<script id="tool" type="text/html">
+    <button class="btn btn-success btn-xs" esa-event="form">编辑</button>
+    <button class="btn btn-danger btn-xs" esa-event="delete">删除</button>
+</script>
+<script>
+require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Table,layer){
+    Table.init({
+        elem: "#table",
+        // select: "checkbox",
+        page: true,
+        cols: [
+            {field:"id",width:"50px",title:"ID"},
+            {field:"name",width:"200px",title:"名称"},
+            {field:"image",width:"150px",title:"图标",tpl:function(d){return '<img height="50px" src="'+d.image+'">';}},
+            {field:"fee",width:"auto",title:"价格"},
+            {field:"day",width:"50px",title:"天数"},
+            {field:"num",width:"50px",title:"次数"},
+            {field:"siteStatus",width:"150px",title:"状态",tpl:function(d){return d.siteStatus == 0 ? "<span class='label label-warning'>未启用</span>" : "<span class='label label-success'>已启用</span>"}},
+            {field:"tool",width:"150px",title:"操作",toolbar:"#tool"}
+        ],
+        headToolbar:"#headToolbar",
+        limit: 10,
+    })
+    
+    
+    Table.on("#table",function(obj){
+        if(obj.event == "reload"){
+            Table.reload("#table");
+        }else if(obj.event == "form"){
+            ESA.fun.open("{:esaurl('admin.pays/form')}","添加",{
+                data:{id:obj.data.id},
+                callback: function(res){
+                    Table.reload("#table");
+                }
+            });
+        }else if(obj.event == "delete"){
+            layer.confirm('删除此数据', {icon: 3, title:'确定删除此数据？'}, function(index){
+                ESA.fun.ajax({
+                    url: "{:esaurl('admin.pays/delete')}",
+                    data: {id: obj.data.id}
+                },function(){
+                    layer.close(index);
+                    Table.reload("#table");
+                })
+            });
+        }
+    })
+})
+</script>
+{include file="$esa_footer"}

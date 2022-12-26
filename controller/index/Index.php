@@ -7,7 +7,7 @@ class Index extends Base
     protected $UnCheck = ["*"];
     public function index()
     {
-        $this->site_title = "宝塔管理器";
+        $this->site_title = get_addon_config("basics.site_name");
         $this->ESA_CONFIG['menu'] = $this->index_menu();
         $this->ESA_CONFIG['site']['name'] = $this->site_title;
         $this->ESA_CONFIG['jsname'] = "/static/template/{$this->ESA_CONFIG['template']}/index/index";
@@ -19,19 +19,34 @@ class Index extends Base
     public function dashboard()
     {
         // exit(dump($this->BT->CopyFile($copy_file)));
-        $pays = $this->model("pay")->select();
+        $pays = $this->model("pays")->select();
         $this->assign("pays", $pays);
         return $this->fetch();
     }
     
+    public function statistics()
+    {
+        $server_num = $this->model("servers")->where("uid",$this->auth->id)->count();
+        $site_num = $this->model("sites")->where("uid",$this->auth->id)->count();
+        return $this->success("获取成功","",["server_num"=>$server_num, "site_num"=>$site_num]);
+    }
+    
     public function article()
     {
-        return $this->model("articles")->paginate($this->request->param("limit"));
+        return $this->model("articles")->order("sort desc")->paginate($this->request->param("limit"));
+    }
+    
+    public function article_detail()
+    {
+        $this->assign("info",$this->model("articles")->get($this->request->param("id")));
+        return $this->fetch();
     }
     
     public function pay(){
+        // 保证调用支付的时候不会将菜单处理为空
+        $this->ESA_CONFIG['menu'] = $this->index_menu();
         $id = $this->request->param("id");
-        $info = $this->model("pay")->get($id);
+        $info = $this->model("pays")->get($id);
         
         if(empty($info)){
             return $this->error("商品不存在！");
@@ -49,7 +64,7 @@ class Index extends Base
             "create_time"   => time(),
         ];
         if($this->model("orders",false)->insert($order)){
-            return $this->payment(["title"=>$name,"fee"=>$money,"order_sn"=>$order_sn,"callback"=>esaurl('index.index/pay_result',null,"",true)],'');
+            return $this->payment(["title"=>$name,"fee"=>$money,"order_sn"=>$order_sn,"callback"=>esaurl('index.index/index',null,"",true)],'');
         }else{
             return $this->error("下单失败");
         }

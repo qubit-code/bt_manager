@@ -2,7 +2,7 @@
 <div class="padding-md">
     <ul class="breadcrumb">
         <li>{$esa_addon.name}</li>	  
-        <li>支付选项</li>
+        <li>公告管理</li>
     </ul>
     
     <div class="smart-widget">
@@ -27,12 +27,11 @@ require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Tab
         page: true,
         cols: [
             {field:"id",width:"50px",title:"ID"},
-            {field:"name",width:"200px",title:"名称"},
-            {field:"image",width:"150px",title:"图标",tpl:function(d){return '<img height="50px" src="'+d.image+'">';}},
-            {field:"fee",width:"auto",title:"价格"},
-            {field:"day",width:"50px",title:"天数"},
-            {field:"num",width:"50px",title:"次数"},
-            {field:"siteStatus",width:"150px",title:"状态",tpl:function(d){return d.siteStatus == 0 ? "<span class='label label-warning'>未启用</span>" : "<span class='label label-success'>已启用</span>"}},
+            {field:"image",width:"150px",title:"缩略图",tpl:function(d){return '<img height="50px" src="'+d.image+'">';}},
+            {field:"name",width:"200px",title:"标题"},
+            {field:"desc",width:"auto",title:"描述"},
+            {field:"view_num",width:"100px",title:"浏览次数"},
+            {field:"create_time",width:"200px",title:"创建时间"},
             {field:"tool",width:"150px",title:"操作",toolbar:"#tool"}
         ],
         headToolbar:"#headToolbar",
@@ -44,8 +43,9 @@ require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Tab
         if(obj.event == "reload"){
             Table.reload("#table");
         }else if(obj.event == "form"){
-            ESA.fun.open("{:esaurl('admin.pay/form')}","添加",{
+            ESA.fun.open("{:esaurl('admin.articles/form')}","添加",{
                 data:{id:obj.data.id},
+                area: ["80%", "90%"],
                 callback: function(res){
                     Table.reload("#table");
                 }
@@ -53,7 +53,7 @@ require(['ESA','esa_table','layer',"esa_switch",'easyPieChart'],function(ESA,Tab
         }else if(obj.event == "delete"){
             layer.confirm('删除此数据', {icon: 3, title:'确定删除此数据？'}, function(index){
                 ESA.fun.ajax({
-                    url: "{:esaurl('admin.pay/delete')}",
+                    url: "{:esaurl('admin.articles/delete')}",
                     data: {id: obj.data.id}
                 },function(){
                     layer.close(index);
