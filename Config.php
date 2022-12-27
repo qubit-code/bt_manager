@@ -24,6 +24,16 @@ return [
                 ],
                 "explain"   => "",
                 "require"   => "",
+            ],
+            [
+                "type"      => "input",
+                "title"     => "接口白名单",
+                "param"     => [
+                    "name"      => "server_ip",
+                    "value"     => "",
+                ],
+                "explain"   => "",
+                "require"   => "",
             ]
         ],
     ]

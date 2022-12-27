@@ -38,7 +38,9 @@ class Index extends Base
     
     public function article_detail()
     {
-        $this->assign("info",$this->model("articles")->get($this->request->param("id")));
+        $model = $this->model("articles")->get($this->request->param("id"));
+        $model->setInc("view_num");
+        $this->assign("info",$model);
         return $this->fetch();
     }
     
