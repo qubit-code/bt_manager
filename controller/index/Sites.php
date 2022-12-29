@@ -118,7 +118,7 @@ class Sites extends Base
             if($this->user['num'] <= 0){
                 return $this->error("建站数量不足，请在首页购买相关产品！");
             }else{
-                model("users")->where("id",$this->user['id'])->setDec("num");
+                $this->model("users")->where("id",$this->user['id'])->setDec("num");
             }
         }
         $where = [
