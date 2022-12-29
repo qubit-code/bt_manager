@@ -28,9 +28,11 @@ class Main extends Addons
      * @return bool
      */
     public function entrance(){
+        $domain = get_addon_config("web.bind_domain");
+        $domain = $domain === [] ? true : $domain;
         $res[] = [
             "title" => "客户端页面",
-            "url"   => esaurl("index.index/index",[],".html",true)
+            "url"   => esaurl("index.index/index",[],".html",$domain)
         ];
         return $res;
     }
