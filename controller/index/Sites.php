@@ -110,6 +110,17 @@ class Sites extends Base
     }
     
     public function next(){
+        // 判定用户会员是否到期
+        if (empty($this->user)) {
+            $this->error("用户信息不存在","");
+        }
+        if($this->user['vip_end_time'] < time()){
+            if($this->user['num'] <= 0){
+                return $this->error("建站数量不足，请在首页购买相关产品！");
+            }else{
+                model("users")->where("id",$this->user['id'])->setDec("num");
+            }
+        }
         $where = [
             "uid"   => $this->auth->id,
             "delete_time"   => 0,
@@ -302,6 +313,7 @@ class Sites extends Base
         
         
         $model->update_time = time();
+        
         if($model->save()){
             return $this->success("处理{$model->id}成功","");
         }else{
