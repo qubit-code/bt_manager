@@ -44,6 +44,8 @@ CREATE TABLE `{$prefix}qubit_bt_manager_configs`  (
     `sql_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否生成数据库:0=否,1=是',
     `sql_codeing` varchar(10) NOT NULL DEFAULT 'utf8' COMMENT '数据库编码',
     
+    `ftp_status` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '生成ftp:0=否,1=是',
+    
     `web_type` int(5) unsigned NOT NULL DEFAULT 0 COMMENT '站点分类',
     `php_version` varchar(2) NOT NULL DEFAULT '00' COMMENT 'php版本',
     
@@ -75,6 +77,8 @@ CREATE TABLE `{$prefix}qubit_bt_manager_sites`  (
     `databaseUser` varchar(50) NOT NULL DEFAULT '' COMMENT '数据库账号',
     `databasePass` varchar(50) NOT NULL DEFAULT '' COMMENT '数据库密码',
     
+    `clearStatus` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '默认文件清除状态:0=未设置,1=清除成功,2=清除失败',
+    `clearResult` varchar(100) NOT NULL DEFAULT '' COMMENT '默认文件清除结果',
     `copyStatus` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '源站复制状态:0=未设置,1=复制成功,2=复制失败',
     `copyResult` varchar(100) NOT NULL DEFAULT '' COMMENT '源站复制结果',
     `sslStatus` int(1) unsigned NOT NULL DEFAULT 0 COMMENT 'sll创建状态:0=未设置,1=创建成功,2=创建失败',

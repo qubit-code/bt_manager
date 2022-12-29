@@ -33,7 +33,7 @@ class Configs extends Base
                 "path_status"   => 0,
                 "source_copy"   => 0,
                 "sql_status"    => 0,
-                "rewrite_status"=> 0
+                "rewrite_status"=> 0,
             ];
             if($model->save(array_merge($base,$param))){
                 return $this->success($status."成功","");

@@ -2,6 +2,7 @@
 namespace addons\qubit_bt_manager\controller\index;
 
 use addons\qubit_bt_manager\library\BTAPI;
+use esa\Random;
 
 class Sites extends Base
 {
@@ -120,13 +121,27 @@ class Sites extends Base
         if(empty($model)){
             return $this->error("站点信息不正确！","");
         }
-        
+        $www = [];
+        if($config['www_status']){
+            $www = ["www.".$model['domain']];
+        }
+        $base_path = $this->server_info['sites_path'];
+        if($config['base_path_status']){
+            $base_path = $config['base_path'];
+        }
         $webname = [
             "domain"    => $model['domain'],
-            "domainlist"=> $model['domain_list'],
+            "domainlist"=> array_merge($model['domain_list'],$www),
             "count"     => count($model['domain_list']),
         ];
-        $site_path = !empty($model['path']) ? $model['path'] : $this->server_info['sites_path']."/".$model['domain'];
+        $site_path = !empty($model['path']) ? $model['path'] : $base_path."/".$model['domain'];
+        if(!empty($config['path_status'])){
+            $site_path = $config['target_path'];
+        }
+        $sql_user = empty($config['sql_status']) ? "" : substr(str_replace(".","_",$model['domain']),0,16);
+        $sql_password = empty($config['sql_status']) ? "" : Random::alnum(8);
+        $ftp_user = empty($config['ftp_username']) ? "" : substr(str_replace(".","_",$model['domain']),0,16);
+        $ftp_password = empty($config['ftp_password']) ? "" : Random::alnum(8);
         // 创建相关站点
         $site_info = [
             "webname"       => json_encode($webname),
@@ -145,17 +160,17 @@ class Sites extends Base
             // ftp
             "ftp"           => empty($config['ftp_status']) ? false : $config['ftp_status'],
             // ftp用户名
-            "ftp_username"  => empty($config['ftp_username']) ? "" : $config['ftp_username'],
+            "ftp_username"  => $ftp_user,
             // ftp密码
-            "ftp_password"  => empty($config['ftp_password']) ? "" : $config['ftp_password'],
+            "ftp_password"  => $ftp_password,
             // sql
-            "sql"           => empty($config['sql_status']) ? false : $config['sql_status'],
+            "sql"           => empty($config['sql_status']) ? false : "MySQL",
             // 数据库编码
             "codeing"       => empty($config['sql_codeing']) ? "" : $config['sql_codeing'],
             // 数据库账号
-            "datauser"      => empty($config['sql_status']) ? "" : substr(str_replace(".","_",$model['domain']),0,16),
+            "datauser"      => $sql_user,
             // 数据库密码
-            "datapassword"  => empty($config['sql_status']) ? "" : $config['ftp_password'],
+            "datapassword"  => $sql_password,
         ];
         
         $site_res = $this->BT->CreateSite($site_info);
@@ -188,12 +203,12 @@ class Sites extends Base
             $clear_info = [
                 "path"  => $site_path."/index.html",
             ];
-            $clear_res_1 = $site->DeleteFile($clear_info);
+            $clear_res_1 = $this->BT->DeleteFile($clear_info);
             
             $clear_info = [
                 "path"  => $site_path."/404.html",
             ];
-            $clear_res_2 = $site->DeleteFile($clear_info);
+            $clear_res_2 = $this->BT->DeleteFile($clear_info);
             
             if(empty($clear_res_1) || empty($clear_res_2) || (isset($clear_res_1['status']) && $clear_res_1['status'] == false) || (isset($clear_res_2['status']) && $clear_res_2['status'] == false)){
                 $model->clearStatus = 2;
@@ -246,7 +261,7 @@ class Sites extends Base
                 "domains"   => json_encode(array_merge([$model['domain']],$model['domain_list'])),
                 "force"     => false,
             ];
-            $ssl_res = $site->CreateLet($ssl_info);
+            $ssl_res = $this->BT->CreateLet($ssl_info);
             if(empty($ssl_res) || (isset($ssl_res['status']) && $ssl_res['status'] == false)){
                 $model->sslStatus = 2;
             }else{
@@ -265,15 +280,15 @@ class Sites extends Base
                     "siteName"  => $model['domain'],
                     "data"      => $config['rewrite_config'],
                 ];
-                $rewrite_res = $site->HttpPostCookie("site?action=SetSiteRewrite",$rewrite_data);
+                $rewrite_res = $this->BT->HttpPostCookie("site?action=SetSiteRewrite",$rewrite_info);
             }else{
                 $rewrite_info = [
-                    "path"  => "/www/server/panel/vhost/rewrite/".$web_info['web_site'].".conf",
+                    "path"  => "/www/server/panel/vhost/rewrite/".$model['domain'].".conf",
                     "data"  => $config['rewrite_config'],
                     "encoding"   => "utf-8",
                 ];
 // {"status": true, "msg": "文件已保存!", "historys": ["1671861203", "1671861187"], "st_mtime": "1671861215"}
-                $rewrite_res = $site->SaveFileBody($rewrite_data);
+                $rewrite_res = $this->BT->SaveFileBody($rewrite_info);
             }
             if(empty($rewrite_res) || (isset($rewrite_res['status']) && $rewrite_res['status'] == false)){
                 $model->rewriteStatus = 2;
