@@ -1,4 +1,8 @@
 {include file="common/header"}
+{if $show}
+{include file="common/nav"}
+<div class="container">
+{/if}
 <div class="padding-md">
     <div class="blog-wrapper">
         <div class="blog-list">
@@ -20,4 +24,7 @@
         </div><!-- ./blog-list -->
     </div>
 </div>
+{if $show}
+</div>
+{/if}
 {include file="common/footer"}

@@ -1,0 +1,42 @@
+<header class="navbar front-end-navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="{:esaurl('index.index/index')}" class="navbar-brand"><strong>公告</strong></a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav">
+                <!--<li>-->
+                <!--    <a href="/"></a>-->
+                <!--</li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {if !$esa_user->isLogin()}
+                {if get_config("sys_index.login_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/login',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-success">登录</a></li>{/if}
+                {if get_config("sys_index.registe_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/register',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-purple">注册</a></li>{/if}
+                {else}
+                <li class="btn-link">
+                    <a href="#" class="btn btn-sm" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-user fa-lg"></i> {$esa_user->nickname}</a>
+                    <ul class="dropdown-menu notification dropdown-3 pull-right">
+                        <li>
+                            <a href="{:esaurl('index.index/index')}">
+                                <span class="notification-icon bg-primary">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                                <span class="m-left-xs">控制中心</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('index/user/logout',['PLATFORM_ID'=>PLATFORM_ID])}">
+                                <span class="notification-icon bg-danger">
+                                    <i class="fa fa-share"></i>
+                                </span>
+                                <span class="m-left-xs">退出</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {/if}
+            </ul>
+        </nav>
+    </div>
+</header>

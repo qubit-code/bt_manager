@@ -159,7 +159,7 @@
             let id = $(this).data("id");
             window.parent.ESA.fun.open("{:esaurl('index.index/article_detail')}","",{
                 area: ['80%','90%'],
-                data:{id:id},
+                data:{id:id,from:"dashboard"},
             });
         })
         ESA.fun.ajax("{:esaurl('index.index/statistics')}",function(d){

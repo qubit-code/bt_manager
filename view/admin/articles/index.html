@@ -15,12 +15,15 @@
         <button class="btn btn-success btn-sm" esa-event="form">添加</button>
     </div>
 </script>
+<script id="copy" type="text/html">
+    <button class="btn btn-info btn-xs copy" esa-event="copy">复制链接地址</button>
+</script>
 <script id="tool" type="text/html">
     <button class="btn btn-success btn-xs" esa-event="form">编辑</button>
     <button class="btn btn-danger btn-xs" esa-event="delete">删除</button>
 </script>
 <script>
-require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
+require(['ESA','esa_table','layer','clipboard',"esa_switch"],function(ESA,Table,layer,ClipboardJS){
     Table.init({
         elem: "#table",
         // select: "checkbox",
@@ -30,6 +33,7 @@ require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
             {field:"image",width:"150px",title:"缩略图",tpl:function(d){return '<img height="50px" src="'+d.image+'">';}},
             {field:"name",width:"200px",title:"标题"},
             {field:"desc",width:"auto",title:"描述"},
+            {field:"href",width:"150px",title:"直访地址",toolbar:"#copy"},
             {field:"view_num",width:"100px",title:"浏览次数"},
             {field:"create_time",width:"200px",title:"创建时间"},
             {field:"tool",width:"150px",title:"操作",toolbar:"#tool"}
@@ -59,6 +63,16 @@ require(['ESA','esa_table','layer',"esa_switch"],function(ESA,Table,layer){
                     layer.close(index);
                     Table.reload("#table");
                 })
+            });
+        }else if(obj.event == "copy"){
+            new ClipboardJS(".copy",{
+                text:function(trigger){
+                    return obj.data.href;
+                }
+            }).on("success",function(e){
+                layer.msg(" 地址复制成功！");
+            
+                e.clearSelection();
             });
         }
     })

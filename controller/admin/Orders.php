@@ -1,15 +1,14 @@
 <?php
 namespace addons\qubit_bt_manager\controller\admin;
 
-class Articles extends Base
+class Orders extends Base
 {
     public function index()
     {
         if($this->request->isAjax()){
-            $model = $this->model("articles");
-            return $model->order("sort desc")->paginate($this->request->param("limit"))->each(function($d){
-                $d['image'] = attach2url($d['image']);
-                $d['href'] = esaurl("index.index/article_detail",['id'=>$d['id']],true,true);
+            $model = $this->model("orders",false)->withJoin(['sys_user','sys_order'],'left')->where("sysOrder.status",2);
+            return $model->order("orders.id desc")->paginate($this->request->param("limit"))->each(function($d){
+                $d['sys_user']['avatar'] = attach2url($d['sys_user']['avatar']);
                 return $d;
             });
         }
@@ -17,7 +16,7 @@ class Articles extends Base
     }
     
     public function form(){
-        $model = $this->model("articles", false);
+        $model = $this->model("orders", false);
         if ($this->request->isAjax()) {
             $param = $this->request->param();
             $status = "添加";
@@ -37,7 +36,7 @@ class Articles extends Base
     }
     
     public function delete(){
-        if($this->model("articles")->where("id",$this->request->param("id"))->delete()){
+        if($this->model("orders")->where("id",$this->request->param("id"))->delete()){
             return $this->success("删除成功","");
         }else{
             return $this->error("删除失败","");

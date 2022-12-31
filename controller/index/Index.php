@@ -3,7 +3,7 @@ namespace addons\qubit_bt_manager\controller\index;
 
 class Index extends Base
 {
-    protected $EXPOSURE = ['pay_result'];
+    protected $EXPOSURE = ['pay_result','article_detail'];
     protected $UnCheck = ["*"];
     public function index()
     {
@@ -38,9 +38,15 @@ class Index extends Base
     
     public function article_detail()
     {
+        $show = false;
+        if($this->request->param("from") != "dashboard"){
+            $show = true;
+        }
         $model = $this->model("articles")->get($this->request->param("id"));
         $model->setInc("view_num");
         $this->assign("info",$model);
+        $this->assign("show",$show);
+
         return $this->fetch();
     }
     

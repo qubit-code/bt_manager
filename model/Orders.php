@@ -16,4 +16,12 @@ class Orders extends Model {
     protected $auto       = [];
     protected $insert     = [];
     protected $update     = [];
+    
+    public function sysUser(){
+        return $this->hasOne("app\common\model\User","id","uid");
+    }
+    
+    public function sysOrder(){
+        return $this->hasOne("app\common\model\Order","order_sn","order_sn");
+    }
 }
