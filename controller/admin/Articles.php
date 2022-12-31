@@ -7,9 +7,11 @@ class Articles extends Base
     {
         if($this->request->isAjax()){
             $model = $this->model("articles");
-            return $model->order("sort desc")->paginate($this->request->param("limit"))->each(function($d){
+            $domain = get_config("web.bind_domain");
+            $domain = $domain == "" ? true : $domain;
+            return $model->order("sort desc")->paginate($this->request->param("limit"))->each(function($d) use ($domain){
                 $d['image'] = attach2url($d['image']);
-                $d['href'] = esaurl("index.index/article_detail",['id'=>$d['id']],true,true);
+                $d['href'] = esaurl("index.index/article_detail",['id'=>$d['id']],true,$domain);
                 return $d;
             });
         }

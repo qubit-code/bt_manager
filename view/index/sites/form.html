@@ -16,7 +16,11 @@
                         <span id="site_num">0</span>
                     </div>
                 </div>
-                {ESA:SELECTPAGE name="config_id" url=":esaurl('index.configs/index')" value="$info.config_id|default='0'" multiple="false"}
+                <div class="">
+                    <label for="exampleInputEmail1">站点配置选项</label>
+                    {ESA:SELECTPAGE name="config_id" url=":esaurl('index.configs/index')" value="$info.config_id|default='0'" multiple="false"}
+                    <span class="help-block">删除此项将会默认创建，配置此项后配置选项会覆盖文本创建相同配置。</span>
+                </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
