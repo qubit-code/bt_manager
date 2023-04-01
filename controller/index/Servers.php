@@ -10,7 +10,7 @@ class Servers extends Base
     {
         if($this->request->isAjax()){
             $model = $this->model("servers");
-            return $model->where("uid",$this->auth->id)->order("id desc")->paginate($this->request->param("limit"));
+            return $model->where("uid",$this->user->id)->order("id desc")->paginate($this->request->param("limit"));
         }
         return $this->fetch();
     }
@@ -26,7 +26,7 @@ class Servers extends Base
                 $status = "编辑";
             }
             $param['pfid']  = PLATFORM_ID;
-            $param['uid']   = $this->auth->id;
+            $param['uid']   = $this->user->id;
 
             $BT = new BTAPI($param['bt_panel'],$param['key']);
             $res = $BT->GetConfig();
@@ -55,14 +55,14 @@ class Servers extends Base
                 return $this->error($status."失败","");
             }
         }
-        $info = $model->where("uid",$this->auth->id)->where("id",$this->request->param("id"))->find();
+        $info = $model->where("uid",$this->user->id)->where("id",$this->request->param("id"))->find();
         $this->assign("server_ip", get_addon_config("basics.server_ip"));
         $this->assign("info", $info);
         return $this->fetch();
     }
     
     public function delete(){
-        if($this->model("servers")->where("uid",$this->auth->id)->where("id",$this->request->param("id"))->delete()){
+        if($this->model("servers")->where("uid",$this->user->id)->where("id",$this->request->param("id"))->delete()){
             return $this->success("删除成功","");
         }else{
             return $this->error("删除失败","");

@@ -1,12 +1,25 @@
 <?php
 namespace addons\qubit_bt_manager;
 
-use ESA\AddonsHook;
+use esa\AddonsHook;
 
-class Hook extends AddonsHook
+class Hooks extends AddonsHook
 {
+    /**
+     * 功能入口方法
+     * @return bool
+     */
+    public function entrance(){
+        $domain = get_platform_config("web.bind_domain");
+        $domain = $domain == "" ? true : $domain;
+        $res[] = [
+            "title" => "客户端页面",
+            "url"   => esaurl("index.index/index",[],".html",$domain)
+        ];
+        return $res;
+    }
     // 支付回调
-    function payResult($data){
+    public function payResult($data){
         // file_put_contents(ADDONS_PATH."/qubit_bt_manager/payresult.txt",json_encode($data));
         if($data['from'] == "callback"){
             //$order = $data['order'];

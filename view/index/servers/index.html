@@ -1,7 +1,7 @@
 {include file="$esa_header"}
 <div class="padding-md">
     <ul class="breadcrumb">
-        <li>{$esa_addon.name}</li>	  
+        <li>{$config.basics.site_name}</li>	  
         <li>服务器管理</li>
         <div class="pull-right">
             <span id="selected" class="label label-{if empty($server_id)}danger{else}success{/if}">{if !empty($server_id)}当前处理服务器：{/if}{$server_info.name|default='未选中服务器'}</span>

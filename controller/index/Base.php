@@ -11,7 +11,7 @@ class Base extends Main
     protected $server_info = null;
     protected $server_id = 0;
     protected $UnCheck = [];
-    protected $user = null;
+    protected $userInfo = null;
     
     public function __construct()
     {
@@ -26,12 +26,14 @@ class Base extends Main
         if(!empty($this->server_info)){
             $this->BT = new BTAPI($this->server_info['bt_panel']."/",$this->server_info['key']);
         }
+        
         $this->checkServer();
         $this->assign("server_id", $this->server_id);
         $this->assign("server_info",$this->server_info);
         $this->checkauth();
         $this->checkUser();
-        $this->assign("user",$this->user);
+        $this->assign("user",$this->userInfo);
+        $this->assign("config", get_addon_config("."));
     }
     
     public function checkServer(){
@@ -58,17 +60,17 @@ class Base extends Main
         if ($this->EXPOSURE == "*" || $this->EXPOSURE == ["*"] || in_array($this->action,$this->EXPOSURE)) {
             return true;
         }
-        $user = $this->model("users",false)->where("pfid",PLATFORM_ID)->where('uid',$this->auth->id)->find();
+        $user = $this->model("users",false)->where("pfid",PLATFORM_ID)->where('uid',$this->user->id)->find();
         if(empty($user)){
             $new_user = [
                 "pfid"  => PLATFORM_ID,
-                "uid"   => $this->auth->id,
+                "uid"   => $this->user->id,
                 "num"      => get_addon_config("basics.free_num"),
                 "create_time"   => time()
             ];
             $id = $this->model("users",false)->insertGetId($new_user);
             $user = $this->model("users",false)->where("id",$id)->find();
         }
-        $this->user = $user;
+        $this->userInfo = $user;
     }
 }

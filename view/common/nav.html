@@ -11,8 +11,8 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {if !$esa_user->isLogin()}
-                {if get_config("sys_index.login_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/login',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-success">登录</a></li>{/if}
-                {if get_config("sys_index.registe_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/register',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-purple">注册</a></li>{/if}
+                {if get_platform_config("sys_index.login_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/login',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-success">登录</a></li>{/if}
+                {if get_platform_config("sys_index.registe_switch",0) == "true"}<li class="btn-link"><a href="{:url('index/user/register',['url'=>base64_encode(request()->url())])}" class="btn btn-sm btn-purple">注册</a></li>{/if}
                 {else}
                 <li class="btn-link">
                     <a href="#" class="btn btn-sm" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-user fa-lg"></i> {$esa_user->nickname}</a>

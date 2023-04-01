@@ -8,9 +8,10 @@ class Index extends Base
     public function index()
     {
         $this->site_title = get_addon_config("basics.site_name");
-        $this->ESA_CONFIG['menu'] = $this->index_menu();
-        $this->ESA_CONFIG['site']['name'] = $this->site_title;
-        $this->ESA_CONFIG['jsname'] = "/static/template/{$this->ESA_CONFIG['template']}/index/index";
+        $this->WEB_CONFIG['menu'] = $this->index_menu();
+        $this->WEB_CONFIG['site']['name'] = $this->site_title;
+        $this->WEB_CONFIG['js'] = "/static/template/{$this->ESA_THEME}/index/index.js";
+        //exit(dump($this->WEB_CONFIG));
         $this->assign("dashboard",esaurl("index.index/dashboard"));
 
         return $this->fetch("index");
@@ -26,8 +27,8 @@ class Index extends Base
     
     public function statistics()
     {
-        $server_num = $this->model("servers")->where("uid",$this->auth->id)->count();
-        $site_num = $this->model("sites")->where("uid",$this->auth->id)->count();
+        $server_num = $this->model("servers")->where("uid",$this->user->id)->count();
+        $site_num = $this->model("sites")->where("uid",$this->user->id)->count();
         return $this->success("获取成功","",["server_num"=>$server_num, "site_num"=>$site_num]);
     }
     
@@ -64,7 +65,7 @@ class Index extends Base
         $money = $info['fee'];
         $order = [
             "pfid"  => PLATFORM_ID,
-            "uid"   => $this->auth->id,
+            "uid"   => $this->user->id,
             "order_sn"  => $order_sn,
             "fee"   => $info['fee'],
             "day"   => $info['day'],

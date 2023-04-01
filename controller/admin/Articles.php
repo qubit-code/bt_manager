@@ -7,7 +7,7 @@ class Articles extends Base
     {
         if($this->request->isAjax()){
             $model = $this->model("articles");
-            $domain = get_config("web.bind_domain");
+            $domain = get_platform_config("web.bind_domain");
             $domain = $domain == "" ? true : $domain;
             return $model->order("sort desc")->paginate($this->request->param("limit"))->each(function($d) use ($domain){
                 $d['image'] = attach2url($d['image']);

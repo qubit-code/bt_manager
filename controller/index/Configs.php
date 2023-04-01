@@ -9,7 +9,7 @@ class Configs extends Base
     {
         if($this->request->isAjax()){
             $model = $this->model("configs");
-            return $model->where("server_id",$this->server_id)->where("uid",$this->auth->id)->order("id desc")->paginate($this->request->param("limit"));
+            return $model->where("server_id",$this->server_id)->where("uid",$this->user->id)->order("id desc")->paginate($this->request->param("limit"));
         }
         return $this->fetch();
     }
@@ -25,7 +25,7 @@ class Configs extends Base
                 $status = "编辑";
             }
             $param['pfid']  = PLATFORM_ID;
-            $param['uid']   = $this->auth->id;
+            $param['uid']   = $this->user->id;
             $param['server_id'] = $this->server_id;
             $base = [
                 "ssl_status"    => 0,
@@ -43,13 +43,13 @@ class Configs extends Base
         }
         $this->assign("web_types",$this->BT->GetSiteTypes());
         $this->assign("php_versions",$this->BT->GetPHPVersion());
-        $info = $model->where("uid",$this->auth->id)->where("id",$this->request->param("id"))->find();
+        $info = $model->where("uid",$this->user->id)->where("id",$this->request->param("id"))->find();
         $this->assign("info", $info);
         return $this->fetch();
     }
     
     public function delete(){
-        if($this->model("configs")->where("server_id",$this->server_id)->where("uid",$this->auth->id)->where("id",$this->request->param("id"))->delete()){
+        if($this->model("configs")->where("server_id",$this->server_id)->where("uid",$this->user->id)->where("id",$this->request->param("id"))->delete()){
             return $this->success("删除成功","");
         }else{
             return $this->error("删除失败","");

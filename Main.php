@@ -1,9 +1,9 @@
 <?php
 namespace addons\qubit_bt_manager;
 
-use ESA\Addons;
+use esa\Addon;
 
-class Main extends Addons
+class Main extends Addon
 {
     /**
      * 插件安装方法
@@ -21,20 +21,6 @@ class Main extends Addons
     public function uninstall()
     {
         return true;
-    }
-    
-    /**
-     * 功能入口方法
-     * @return bool
-     */
-    public function entrance(){
-        $domain = get_config("web.bind_domain");
-        $domain = $domain == "" ? true : $domain;
-        $res[] = [
-            "title" => "客户端页面",
-            "url"   => esaurl("index.index/index",[],".html",$domain)
-        ];
-        return $res;
     }
     
     public function model($name,$status=true){
