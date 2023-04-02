@@ -12,5 +12,6 @@ class Base extends Main
         parent::__construct();
         
         $this->checkauth();
+        $this->assign("esa_addon", $this->ESA_ADDON);
     }
 }
