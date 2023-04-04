@@ -5,16 +5,17 @@ class Index extends Base
 {
     protected $EXPOSURE = ['pay_result','article_detail'];
     protected $UnCheck = ["*"];
+
     public function index()
     {
-        $this->site_title = get_addon_config("basics.site_name");
+        $this->site_title = $this->ADDON_CONFIG['basics']['site_name'];
         $this->WEB_CONFIG['menu'] = $this->index_menu();
         $this->WEB_CONFIG['site']['name'] = $this->site_title;
         $this->WEB_CONFIG['js'] = "/static/template/{$this->ESA_THEME}/index/index.js";
         //exit(dump($this->WEB_CONFIG));
         $this->assign("dashboard",esaurl("index.index/dashboard"));
 
-        return $this->fetch("index");
+        return $this->fetch();
     }
     
     public function dashboard()

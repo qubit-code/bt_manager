@@ -56,7 +56,7 @@ class Servers extends Base
             }
         }
         $info = $model->where("uid",$this->user->id)->where("id",$this->request->param("id"))->find();
-        $this->assign("server_ip", get_addon_config("basics.server_ip"));
+        $this->assign("server_ip", $this->ADDON_CONFIG["basics"]["server_ip"]);
         $this->assign("info", $info);
         return $this->fetch();
     }

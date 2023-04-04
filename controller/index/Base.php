@@ -33,7 +33,7 @@ class Base extends Main
         $this->checkauth();
         $this->checkUser();
         $this->assign("user",$this->userInfo);
-        $this->assign("config", get_addon_config("."));
+        $this->assign("config", $this->ADDON_CONFIG);
     }
     
     public function checkServer(){
@@ -65,7 +65,7 @@ class Base extends Main
             $new_user = [
                 "pfid"  => PLATFORM_ID,
                 "uid"   => $this->user->id,
-                "num"      => get_addon_config("basics.free_num"),
+                "num"      => get_config("basics.free_num"),
                 "create_time"   => time()
             ];
             $id = $this->model("users",false)->insertGetId($new_user);
