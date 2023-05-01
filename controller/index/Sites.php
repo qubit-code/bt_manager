@@ -114,11 +114,11 @@ class Sites extends Base
         if (empty($this->user)) {
             $this->error("用户信息不存在","");
         }
-        if($this->user['vip_end_time'] < time()){
-            if($this->user['num'] <= 0){
+        if($this->user->vip_end_time < time()){
+            if($this->user->num <= 0){
                 return $this->error("建站数量不足，请在首页购买相关产品！");
             }else{
-                $this->model("users")->where("id",$this->user['id'])->setDec("num");
+                $this->model("users")->where("id",$this->user->id)->setDec("num");
             }
         }
         $where = [

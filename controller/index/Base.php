@@ -65,7 +65,7 @@ class Base extends Main
             $new_user = [
                 "pfid"  => PLATFORM_ID,
                 "uid"   => $this->user->id,
-                "num"      => get_config("basics.free_num"),
+                "num"      => get_addon_config("basics.free_num"),
                 "create_time"   => time()
             ];
             $id = $this->model("users",false)->insertGetId($new_user);
