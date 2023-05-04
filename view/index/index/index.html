@@ -18,51 +18,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!-- 平台信息窗 -->
-                <div class="user-block hidden-xs hide" id="platformInfo">
-                    <a href="#" data-toggle="dropdown">
-                        <img src="/static/images/profile/profile1.jpg" alt="" class="img-circle inline-block user-profile-pic platformHeadInfoLogo">
-                        <!-- <div class="user-detail inline-block">
-                            <i class="fa fa-angle-down"></i>
-                        </div> -->
-                    </a>
-                    <div class="panel border dropdown-menu user-panel" style="width:230px" id="platformHeadInfo">
-                        <div class="user-widget" style="margin-bottom: 0px;">
-                            <div class="user-widget-body bg-grey">
-                                <img class="platformHeadInfoLogo" src="/static/images/profile/profile2.jpg" alt="">
-                                <div class="user-detail">
-                                    <div class="m-top-sm" id="platformHeadInfoName">平台名称</div>
-                                    <div class="small-text" style="line-height:15px" id="platformHeadInfoDescription">平台简介</div>
-                                </div>
-                            </div>
-                            <div class="user-widget-statatistic">
-                                <ul class="clearfix">
-                                    <li class="border-red">
-                                        <a href="{:url('platform/manager')}" target="main-content" style="padding:0px">管理</a>
-                                    </li>
-                                    <li class="border-green">
-                                        <a href="{:url('platform/info')}" target="main-content" style="padding:0px" onclick="jumpToPlatform()">详情</a>
-                                    </li>
-                                    <li class="border-yellow">
-                                        <a href="{:url('platform/index')}" target="main-content" style="padding:0px" id="switchPlatform">切换</a>
-                                    </li>
-                                </ul><!-- ./row -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 搜索框 -->
-                <!--<ul class="nav-notification">	-->
-                <!--    <li class="search-list">-->
-                <!--        <div class="search-input-wrapper">-->
-                <!--            <div class="search-input">-->
-                <!--                <input type="text" class="form-control input-sm inline-block">-->
-                <!--                <a href="#" class="input-icon text-normal"><i class="ion-ios7-search-strong"></i></a>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--    </li>-->
-                <!--</ul>-->
-                <!-- 右侧信息 -->
                 <div class="pull-right m-right-sm">
                     <!-- 用户信息 -->
                     <div class="user-block hidden-xs">
@@ -76,12 +31,6 @@
                         <div class="panel border dropdown-menu user-panel pull-right">
                             <div class="panel-body paddingTB-sm">
                                 <ul>
-                                    <!--<li>-->
-                                    <!--    <a href="{:url('index/user/profile')}" target="main-content">-->
-                                    <!--        <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">个人中心</span>-->
-                                    <!--    </a>-->
-                                    <!--</li>-->
-                                    <!--<li class="divider"></li>-->
                                     <li>
                                         <a href="{:url('index/user/logout',['PLATFORM_ID'=>PLATFORM_ID])}">
                                             <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
